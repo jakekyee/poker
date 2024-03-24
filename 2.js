@@ -118,8 +118,12 @@ function fourOfAKind(theNums, theSuits) {
 // 'a'+'0000'+b
 //     100002-140013
 
-function fullHouse(playerHands, shownCards) {
-  return [true, playerStrength];
+function fullHouse(theNums, theSuits) {
+  if (theNums.includes(3)) {
+    return [true, 2700 + theNums.indexOf(3) + 2];
+  }
+
+  if(theNums)
 }
 
 // Flush
