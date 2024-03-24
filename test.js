@@ -276,7 +276,7 @@ function checkbet(lob) {
   let oldnum = num;
   let oldplayer = player;
   let oldround = round;
-  getbet(lob)
+  getbet(lob);
   if (oldnum != num || oldplayer != player || oldround != round ) {
 
   }
