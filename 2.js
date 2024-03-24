@@ -6,8 +6,6 @@ numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
 playerHands = ["5_s", "2_c"];
 shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
 
-// cards are formatted as (number)_(suit)
-
 // handHierarchy function
 function handHierarchy(shownCards, hands, playerCount) {
   const hierarchy = {};
@@ -35,7 +33,8 @@ function addPlayer(player, handStrength, handStrengths, hierarchy, tieBreaker) {
     i++;
   }
   if (handStrength == handStrengths[i]) {
-    //
+    // if it is flush, two pair or a pair tie
+    playerStrength = nextHighCard(playerHands);
   }
 
   const newHierarchy = [
@@ -221,7 +220,7 @@ function pair(nums) {
 }
 
 // High Card
-function highCard(playerHands) {
+function highCard(playerHands, none) {
   for (let card = 12; card > 0; card--) {
     for (let hand = 0; hand < playerHands.length; hand++) {
       if (playerHands[hand].charAt(0) == numbers[card]) {
@@ -229,5 +228,16 @@ function highCard(playerHands) {
       }
     }
   }
-  return [true, playerStrength, NaN];
+  return [false, 0, NaN];
+}
+
+function nextHighCard(playerHands) {
+  for (let card = 12; card > 0; card--) {
+    for (let hand = 0; hand < playerHands.length; hand++) {
+      if (playerHands[hand].charAt(0) == numbers[card]) {
+        return [true, card + 2, NaN];
+      }
+    }
+  }
+  return [false, 0, NaN];
 }
