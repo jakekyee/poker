@@ -573,10 +573,10 @@ function highCard(playerHands, none) {
 // Functions to determine winning conditions
 
 // distribute winnings
-function distributeWinnings() {
-  winners = ["tie_p0_p1", "tie_p2_p3"];
-  bets = ["90", "100", "110", "120"];
-  balance = ["0", "0", "0", "0"];
+function distributeWinnings(winners, bets, balance) {
+  //winners = ["tie_p0_p1", "tie_p2_p3"]; or ["p0","p1","p2","p3"]
+  //bets = ["90", "100", "110", "120"];
+  //balance = ["0", "0", "0", "0"];
 
   intbets = arrStrToInt(bets);
   intbalance = arrStrToInt(balance);
@@ -587,7 +587,7 @@ function distributeWinnings() {
     playerNum = 0;
     payout = 0;
 
-    //check for tie                 //["tie_p0_p1", p2, p3]
+    //check for tie                 
     if (temp[0] == "tie") {
       numTiedPlayers = temp.length - 1;
       tiedPlayerNums = [];
