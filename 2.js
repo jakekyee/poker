@@ -65,47 +65,24 @@ function setHands(playerHands, shownCards) {
   let returnNums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let returnSuits = [0, 0, 0, 0];
 
-  return [[returnNums], [returnSuits]];
-}
-
-// Royal Flush
-
-function royalFlush(playerHands, shownCards) {
-  royal = ["a", "x", "q", "j", "k"];
-  matchingCards = [];
-
-  // suits format: spades, clubs, hearts, diamond
-  suitsMatched = [0, 0, 0, 0];
-
-  // check shown cards
+  // check shown hands
   for (let card = 0; card < shownCards.length; card++) {
-    if (royal.includes(shownCards[card].charAt(0))) {
-      matchingCards.push(shownCards[card]);
-    }
+    returnNums[numbers.indexOf(shownCards[card].charAt(0))]++;
+    returnSuits[suits.indexOf(shownCards[card].charAt(2))]++;
   }
 
   // check player's hand
   for (let card = 0; card < playerHands.length; card++) {
-    if (royal.includes(playerHands[card].charAt(0))) {
-      matchingCards.push(playerHands[card]);
-    }
+    returnNums[numbers.indexOf(playerHands[card].charAt(0))]++;
+    returnSuits[suits.indexOf(playerHands[card].charAt(2))]++;
   }
 
-  if (matchingCards.length > 5) {
-    for (let card = 0; card < matchingCards.length; card++) {
-      for (let suit = 0; suit < suitsMatched.length; suit++) {
-        if (matchingCards[card].charAt(2) == suits[suit]) {
-          suitsMatched[suit]++;
-          if (suitsMatched[suit] == 5) {
-            return [true, 10000000];
-          }
-          break;
-        }
-      }
-    }
+  return [[returnNums], [returnSuits]];
+}
+// Royal Flush
 
-    return [false, 0, suitsMatched, matchingCards];
-  }
+function royalFlush(playerHands, shownCards) {
+  return [false, 0, suitsMatched, matchingCards];
 }
 
 // Straight Flush
