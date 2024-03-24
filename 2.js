@@ -4,7 +4,7 @@
 suits = ["s", "c", "h", "d"];
 numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
 playerHands = ["5_s", "2_c"];
-shownCards = ["2_s", "2_d", "4_c", "4_h", "5_d"];
+shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
 
 // cards are formatted as (number)_(suit)
 
@@ -12,15 +12,16 @@ shownCards = ["2_s", "2_d", "4_c", "4_h", "5_d"];
 function handHierarchy(shownCards, hands, playerCount) {
   const hierarchy = {};
   const handStrengths = {};
-  let strength;
+  let strength, tieBreaker;
 
   for (let player = 0; player < playerCount; player++) {
-    strength = handStrength(hands[player], shownCards);
+    [strength, tieBreaker] = handStrength(hands[player], shownCards);
     [hierarchy, handStrengths] = addPlayer(
-      player,
+      "p" + player.toString(),
       strength,
       handStrengths,
-      hierarchy
+      hierarchy,
+      tieBreaker
     );
   }
 
@@ -28,20 +29,41 @@ function handHierarchy(shownCards, hands, playerCount) {
 }
 
 // addPlayer function
-function addPlayer(player, handStrengh, handStrengths, hierarchy) {
-  return [hierarchy, handStrengths];
+function addPlayer(player, handStrength, handStrengths, hierarchy, tieBreaker) {
+  let i = 0;
+  while (handStrength < handStrengths[i] && handStrength != handStrengths[i]) {
+    i++;
+  }
+  if (handStrength == handStrengths[i]) {
+    //
+  }
+
+  const newHierarchy = [
+    ...hierarchy.slice(0, i),
+    player,
+    ...hierarchy.slice(i),
+  ];
+  const newHandStrengths = [
+    ...handStrengths.slice(0, i),
+    handStrength,
+    ...handStrengths.slice(i),
+  ];
+
+  return [newHierarchy, newHandStrengths];
 }
+
+console.log(addPlayer("p1", 10, [10, 8, 7], ["p0", "p2", "p3"]));
 
 function handStrength(playerHands, shownCards) {
   let strengthFound = false;
   let i = 0;
-  let playerStrength, theNums, theSuits;
+  let playerStrength, theNums, theSuits, arbStr, plaStr, tieBreaker;
 
   [theNums, theSuits] = setHands(playerHands, shownCards);
+  [arbStr, plaStr, arbTie] = straightFlush(playerHands, shownCards);
 
   var possibleHands = [
     royalFlush,
-    straightFlush,
     fourOfAKind,
     fullHouse,
     flush,
@@ -53,11 +75,19 @@ function handStrength(playerHands, shownCards) {
   ];
 
   while (strengthFound != false) {
-    [strengthFound, playerStrength] = possibleHands[i](theNums, theSuits);
+    [strengthFound, playerStrength, tieBreaker] = possibleHands[i](
+      theNums,
+      theSuits
+    );
+    if (i == 1 && arbStr) {
+      strengthFound = arbStr;
+      playerStrength = plaStr;
+      tieBreaker = arbTie;
+    }
     i++;
   }
 
-  return playerStrength;
+  return [playerStrength, tieBreaker];
 }
 
 // Organize loops
@@ -77,53 +107,51 @@ function setHands(playerHands, shownCards) {
     returnSuits[suits.indexOf(playerHands[card].charAt(2))]++;
   }
 
-  return [[returnNums], [returnSuits]];
+  return [returnNums, returnSuits];
 }
 
 // Royal Flush
 function royalFlush(theNums, theSuits) {
   if (theSuits.includes(5)) {
-    return [false, 0];
+    return [false, 0, NaN];
   }
   if (
     ((((theNums[12] == theNums[11]) == theNums[10]) == theNums[9]) ==
       theNums[8]) ==
     1
   ) {
-    return [true, 10000000];
+    return [true, 10000000, NaN];
   }
-  return [false, 0];
+  return [false, 0, NaN];
 }
 
 // Straight Flush
-// 1000000+a+b+c+d+e
-//     1000015-1000060
-
 function straightFlush(playerHands, shownCards) {
-  return [true, playerStrength];
+  return [false, NaN, NaN];
 }
 
 // Four of a kind
 function fourOfAKind(theNums, theSuits) {
   if (theNums.includes(4)) {
-    return [true, 150000 + theNums.indexOf(4) + 2];
+    return [true, 150000 + theNums.indexOf(4) + 2, NaN];
   }
 
-  return [false, 0];
+  return [false, 0, NaN];
 }
 
 // Full House
-// No ties-> three of kind
-// (3 cards = a, 2 cards = b)
-// 'a'+'0000'+b
-//     100002-140013
-
 function fullHouse(theNums, theSuits) {
-  if (theNums.includes(3)) {
-    return [true, 2700 + theNums.indexOf(3) + 2];
+  if (theNums.includes(3) && theNums.includes(2)) {
+    return [
+      true,
+      parseInt(theNums[theNums.indexOf(3)].toString() + "0000") +
+        theNums[theNums.indexOf(2)],
+      ,
+      NaN,
+    ];
+  } else {
+    return [false, 0, NaN];
   }
-
-  if(theNums)
 }
 
 // Flush
@@ -135,49 +163,71 @@ function flush(theNums, theSuits) {
 }
 
 // Straight
-// a+b+c+d+e+'000'
-//     15000-60000
+function straight(nums) {
+  counter = 0;
+  highestCard;
+  searching = true;
+  for (var i = nums.length - 1; i >= 0; i--) {
+    if (counter == 5) {
+      return [true, 1000 * (5 * highestCard - 10), NaN];
+    }
 
-function straight(playerHands, shownCards) {
-  return [true, playerStrength];
+    if (nums[i] != 0) {
+      if (searching == true) {
+        highestCard = i + 2;
+        searching = false;
+      }
+      counter++;
+    } else {
+      counter = 0;
+      searching = true;
+    }
+  }
+  return [false, NaN, NaN];
 }
 
 // Three of a Kind
 function threeOfAKind(playerHands, shownCards) {
   if (theNums.includes(3)) {
-    return [true, 2700 + theNums.indexOf(3) + 2];
+    return [true, 2700 + theNums.indexOf(3) + 2, NaN];
   }
-  return [false, 0];
+  return [false, 0, NaN];
 }
 
 // Two Pair
-// a+b+'00'
-//     300-2700
-
-function twoPair(playerHands, shownCards) {
-  // use pair function
-  return [true, playerStrength];
+function twoPair(nums) {
+  counter = 0;
+  pairs = [0, 0];
+  for (var i = nums.length - 1; i >= 0; i--) {
+    if (nums[i] == 2) {
+      pairs[counter] = i + 2;
+      counter++;
+    }
+    if (counter == 2) {
+      return [true, 100 * (pairs[0] + pairs[1]), nums];
+    }
+  }
+  return [false, NaN, NaN];
 }
 
 // Pair
-// a+a+'0'
-//     20-280
-
-function pair(playerHands, shownCards) {
-  return [true, playerStrength];
+function pair(nums) {
+  for (var i = nums.length - 1; i >= 0; i--) {
+    if (nums[i] == 2) {
+      return [true, 20 * (i + 2), nums];
+    }
+  }
+  return [false, NaN, NaN];
 }
 
 // High Card
-// a
-//     1-14
-
 function highCard(playerHands) {
   for (let card = 12; card > 0; card--) {
     for (let hand = 0; hand < playerHands.length; hand++) {
       if (playerHands[hand].charAt(0) == numbers[card]) {
-        return [true, card + 2];
+        return [true, card + 2, NaN];
       }
     }
   }
-  return [true, playerStrength];
+  return [true, playerStrength, NaN];
 }
