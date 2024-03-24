@@ -247,11 +247,12 @@ function getmsg(lob) {
 function checkpcount(lob) {
   let oldtotalplayers = totalplayers;
   
-  playernumbers(lob);
-  if (oldtotalplayers != totalplayers) {
-    if (totalplayers != )
-    totalplayers 
+  let offset = playernum - 1;
 
+  playernumbers(lob);
+
+  if (oldtotalplayers != totalplayers) {
+    flipall(totalplayers, offset);
   }
   if (started == 0) {
     setTimeout(checkmsg(), 1000);
@@ -268,7 +269,7 @@ function checkmsg(lob) {
     updatechat("p"+pmsg, message);
   }
   console.log("test");
-  setTimeout(checkmsg(), 1000);
+  setTimeout(checkmsg, 4000);
 }
 
 function checkbet(lob) {
@@ -308,5 +309,85 @@ default:
 var div = document.getElementById('chatbox');
 div.innerHTML += '<p> <b style = "' + color + '">' + person + ':</b>' + message + '</p>';
 }
+
+
+function flipcard(cid, card) {
+  document.getElementById(cid).src=card+".png";
+}
+
+function flipall(players) {
+  for (var i = 0; i<players; i++) {
+    var index = 5+2*playernum;
+    var tempindex = 5+2*i;
+    if (tempindex == index) {
+      tempindex = 5+2*(i+1);
+      if (tempindex > 12) {
+        tempindex = tempindex -12 + 5;
+      }
+    }
+    flipcard("o" + str(i) + "1", cards[tempindex-1]);
+    flipcard ("o" + str(i) + "2", cards[tempindex]);
+  }
+}
+
+
+
+function flipeverything(players, playernum) {
+  flipcard("y1", cards[5+2*playernum-1]);
+  flipcard ("y2", cards[5+2*playernum]);
+}
+
+
+// first5 is river, next 2 p1, p2, p3, p4
+var cardarray = ['2_s', '3_s', '4_s', '5_s', '6_s', '7_s', '8_s', '9_s', 'x_s', 'j_s', 'q_s', 'k_s', 'a_s', '2_c', '3_c', '4_c', '5_c', '6_c', '7_c', '8_c', '9_c', 'x_c', 'j_c', 'q_c', 'k_c', 'a_c', '2_h', '3_h', '4_h', '5_h', '6_h', '7_h', '8_h', '9_h', 'x_h', 'j_h', 'q_h', 'k_h', 'a_h', '2_d', '3_d', '4_d', '5_d', '6_d', '7_d', '8_d', '9_d', 'x_d', 'j_d', 'q_d', 'k_d', 'a_d']
+var cards = [];
+var tempcards = [];
+
+function startgame(seed) {
+  cards = [];
+  tempcards = [];
+  var temp = seed;
+  var cardnum = -1;
+  var z = 0; 
+  while (z < 14) {
+    temp = temp + 1;  
+    cardnum = seededrand(temp);
+    if (tempcards.includes(cardnum)){
+
+    }
+    else {
+      tempcards.push(cardnum);
+      z = z+1;
+    }
+    
+  }
+
+  for (var i = 0; i < 13; i++) {
+    cards.push(cardarray[tempcards[i]])
+  }
+
+  flipcard("y1", "back");
+  flipcard ("y2", "back");
+  flipcard("o11", "back");
+  flipcard ("o12", "back");
+  flipcard("o21", "back");
+  flipcard ("o22", "back");
+  flipcard("o31", "back");
+  flipcard ("o32", "back");
+  flipcard("c1", "back");
+  flipcard ("c2", "back");
+  flipcard("c3", "back");
+  flipcard ("c4", "back");
+  flipcard ("c5", "back");
+
+  console.log( cards);
+}
+
+function seededrand(seed) {
+  var thing = seed;
+    var x = Math.sin(thing++) * 10000;
+    return Math.floor((x - Math.floor(x))*10000)%52;
+}
+
 
 
