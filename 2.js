@@ -15,7 +15,7 @@ function handHierarchy(shownCards, hands, playerCount) {
   for (let player = 0; player < playerCount; player++) {
     [strength, tieBreaker] = handStrength(hands[player], shownCards);
     [hierarchy, handStrengths] = addPlayer(
-      "p" + player.toString(),
+      player,
       strength,
       handStrengths,
       hierarchy,
@@ -33,13 +33,19 @@ function addPlayer(player, handStrength, handStrengths, hierarchy, tieBreaker) {
     i++;
   }
   if (handStrength == handStrengths[i]) {
-    // if it is flush, two pair or a pair tie
-    playerStrength = nextHighCard(playerHands);
+    // if it is in range of two pair
+    
+    // if it is in range of pair
+    else if(strength/2 == playerHands[player][0]) {
+        
+    }
+    // else
+        // tie
   }
 
   const newHierarchy = [
     ...hierarchy.slice(0, i),
-    player,
+    "p" + player.toString(),
     ...hierarchy.slice(i),
   ];
   const newHandStrengths = [
@@ -124,9 +130,61 @@ function royalFlush(theNums, theSuits) {
   return [false, 0, NaN];
 }
 
-// Straight Flush
-function straightFlush(playerHands, shownCards) {
-  return [false, NaN, NaN];
+function straightFlush(hand, shown) {
+  allcards = ["", "", "", "", "", "", ""];
+  sortedcards = ["", "", "", "", "", "", ""];
+
+  // get shown cards
+  for (let i = 0; i < 5; i++) {
+    allcards[i] = shown[i];
+  }
+
+  // get players cards
+  for (let i = 0; i < 2; i++) {
+    allcards[i + 5] = hand[i];
+  }
+
+  //sort cards
+  for (let j = 0; j < sortedcards.length; j++) {
+    min = numbers.indexOf(allcards[0].charAt(0)) + 2;
+    indexOfMin = 0;
+
+    for (let i = 0; i < allcards.length; i++) {
+      //find smallest card
+      if (min > numbers.indexOf(allcards[i].charAt(0)) + 2) {
+        min = numbers.indexOf(allcards[i].charAt(0)) + 2;
+        indexOfMin = i;
+      }
+    }
+    sortedcards[j] = allcards[indexOfMin];
+    allcards.splice(indexOfMin, 1);
+  }
+
+  //check for straight flush
+  counter = 1;
+  let highestCard;
+  searching = true;
+  for (var i = sortedcards.length - 1; i > 0; i--) {
+    if (
+      numbers.indexOf(sortedcards[i].charAt(0)) - 1 ==
+        numbers.indexOf(sortedcards[i - 1].charAt(0)) &&
+      sortedcards[i].charAt(2) == sortedcards[i - 1].charAt(2)
+    ) {
+      if (searching == true) {
+        highestCard = numbers.indexOf(sortedcards[i].charAt(0)) + 2;
+        searching = false;
+      }
+      counter++;
+    } else {
+      counter = 1;
+      searching = true;
+    }
+
+    if (counter == 5) {
+      return [true, 5 * highestCard - 10 + 1000000];
+    }
+  }
+  return [false, NaN];
 }
 
 // Four of a kind
@@ -155,22 +213,34 @@ function fullHouse(theNums, theSuits) {
 
 // Flush
 function flush(theNums, theSuits) {
-  if (theSuits.includes(5)) {
-    return [true, 60001 + theNums.indexOf(5) + 2, theNums];
-  }
-  return [false, 0, NaN];
-}
-
-// Straight
-function straight(nums) {
   counter = 0;
-  highestCard;
+  let highestCard;
   searching = true;
-  for (var i = nums.length - 1; i >= 0; i--) {
-    if (counter == 5) {
-      return [true, 1000 * (5 * highestCard - 10), NaN];
+  for (var i = theNums.length - 1; i >= 0; i--) {
+    if (theNums[i] != 0) {
+      if (searching == true) {
+        highestCard = i + 2;
+        searching = false;
+      }
+      counter++;
+    } else {
+      counter = 0;
+      searching = true;
     }
 
+    //check if straight
+    if (counter == 5) {
+      return [true, 1000 * (5 * highestCard - 10)];
+    }
+  }
+  return [false, NaN];
+}
+
+function straight(nums) {
+  counter = 0;
+  let highestCard;
+  searching = true;
+  for (var i = nums.length - 1; i >= 0; i--) {
     if (nums[i] != 0) {
       if (searching == true) {
         highestCard = i + 2;
@@ -181,8 +251,13 @@ function straight(nums) {
       counter = 0;
       searching = true;
     }
+
+    //check if straight
+    if (counter == 5) {
+      return [true, 1000 * (5 * highestCard - 10)];
+    }
   }
-  return [false, NaN, NaN];
+  return [false, NaN];
 }
 
 // Three of a Kind
@@ -221,17 +296,6 @@ function pair(nums) {
 
 // High Card
 function highCard(playerHands, none) {
-  for (let card = 12; card > 0; card--) {
-    for (let hand = 0; hand < playerHands.length; hand++) {
-      if (playerHands[hand].charAt(0) == numbers[card]) {
-        return [true, card + 2, NaN];
-      }
-    }
-  }
-  return [false, 0, NaN];
-}
-
-function nextHighCard(playerHands) {
   for (let card = 12; card > 0; card--) {
     for (let hand = 0; hand < playerHands.length; hand++) {
       if (playerHands[hand].charAt(0) == numbers[card]) {
