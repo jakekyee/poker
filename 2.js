@@ -35,9 +35,9 @@ function addPlayer(player, handStrengh, handStrengths, hierarchy) {
 function handStrength(playerHands, shownCards) {
   let strengthFound = false;
   let i = 0;
-  let playerStrength;
+  let playerStrength, theNums, theSuits;
 
-  [nums, retu];
+  [theNums, theSuits] = setHands(playerHands, shownCards);
 
   var possibleHands = [
     royalFlush,
@@ -53,7 +53,7 @@ function handStrength(playerHands, shownCards) {
   ];
 
   while (strengthFound != false) {
-    [strengthFound, playerStrength] = possibleHands[i](playerHands, shownCards);
+    [strengthFound, playerStrength] = possibleHands[i](theNums, theSuits);
     i++;
   }
 
@@ -79,10 +79,21 @@ function setHands(playerHands, shownCards) {
 
   return [[returnNums], [returnSuits]];
 }
+
 // Royal Flush
 
-function royalFlush(playerHands, shownCards) {
-  return [false, 0, suitsMatched, matchingCards];
+function royalFlush(theNums, theSuits) {
+  if (!theSuits.includes(5)) {
+    return [false, 0];
+  }
+  if (
+    ((((theNums[12] == theNums[11]) == theNums[10]) == theNums[9]) ==
+      theNums[8]) ==
+    1
+  ) {
+    return [true, 10000000];
+  }
+  return [false, 0];
 }
 
 // Straight Flush
@@ -114,10 +125,11 @@ function fullHouse(playerHands, shownCards) {
 }
 
 // Flush
-// '60001' -> if so high cards
-
-function flush(playerHands, shownCards) {
-  return [true, playerStrength];
+function flush(theNums, theSuits) {
+  if (theSuits.includes(5)) {
+    return [true, 0];
+  }
+  return [true, 60001, theNums];
 }
 
 // Straight
