@@ -25,6 +25,9 @@ Person B
 ![image](https://github.com/jakekyee/secondpersonpoker/assets/99901262/d9801a94-72be-4893-8020-e802d77b2021)
 
 
+We can see that Person A has the 8 of spades and 5 of hearts, while Person B has the 9 of spades and 8 of hearts. Note the otherwise matching board states and friendly attempt at communication.
+
+
 Remember, this is very much a social game, and liberal usage and abusage of trickery and deception is expected and needed to succeed. 
 
 For this reason, we have also provided a self-hosted api based private epheremal communication system to sync results with opponents to guarantee honesty and facilitate the sharing of potentially important information. Game setup and dealing is all smoothly handled in the background, so you can focus solely on the more important things, like winning.
