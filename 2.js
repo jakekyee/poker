@@ -10,16 +10,15 @@ shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
 function handHierarchy(shownCards, hands, playerCount) {
   const hierarchy = {};
   const handStrengths = {};
-  let strength, tieBreaker;
+  let strength;
 
   for (let player = 0; player < playerCount; player++) {
-    [strength, tieBreaker] = handStrength(hands[player], shownCards);
+    strength = handStrength(hands[player], shownCards);
     [hierarchy, handStrengths] = addPlayer(
       player,
       strength,
       handStrengths,
-      hierarchy,
-      tieBreaker
+      hierarchy
     );
   }
 
@@ -27,20 +26,132 @@ function handHierarchy(shownCards, hands, playerCount) {
 }
 
 // addPlayer function
-function addPlayer(player, handStrength, handStrengths, hierarchy, tieBreaker) {
+function addPlayer(player, handStrength, handStrengths, hierarchy) {
   let i = 0;
   while (handStrength < handStrengths[i] && handStrength != handStrengths[i]) {
     i++;
   }
+
   if (handStrength == handStrengths[i]) {
     // if it is in range of two pair
-    
-    // if it is in range of pair
-    else if(strength/2 == playerHands[player][0]) {
-        
-    }
-    // else
+    if (strength > 299 && strength < 2701) {
+      if (
+        playerHands[player][0].charAt(0) == playerHands[player][0].charAt(1) ||
+        strength ==
+          parseInt(playerHands[player][0].charAt(0)) +
+            parseInt(playerHands[player][1].charAt(1))
+      ) {
         // tie
+        const newHierarchy = [
+          ...hierarchy.slice(0, i),
+          "tie_" + hierarchy[i] + "_p" + player.toString(),
+          ...hierarchy.slice(i + 1),
+        ];
+        return [newHierarchy, handStrengths];
+      } else if (
+        playerHands[player][0].charAt(0) ==
+        playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+      ) {
+        if (
+          numbers.indexOf(playerHands[player][1].charAt(0)) >
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          // i remains the same
+        } else if (
+          numbers.indexOf(playerHands[player][1].charAt(0)) ==
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          // tie
+          const newHierarchy = [
+            ...hierarchy.slice(0, i),
+            "tie_" + hierarchy[i] + "_p" + player.toString(),
+            ...hierarchy.slice(i + 1),
+          ];
+          return [newHierarchy, handStrengths];
+        } else if (
+          numbers.indexOf(playerHands[player][1].charAt(0)) <
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          i++;
+        }
+      } else {
+        if (
+          numbers.indexOf(playerHands[player][0].charAt(0)) >
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          // i remains the same
+        } else if (
+          numbers.indexOf(playerHands[player][0].charAt(0)) ==
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          if (
+            numbers.indexOf(playerHands[player][1].charAt(0)) >
+            numbers.indexOf(
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+            )
+          ) {
+            // i remains the same
+          } else if (
+            numbers.indexOf(playerHands[player][1].charAt(0)) ==
+            numbers.indexOf(
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+            )
+          ) {
+            // tie
+            const newHierarchy = [
+              ...hierarchy.slice(0, i),
+              "tie_" + hierarchy[i] + "_p" + player.toString(),
+              ...hierarchy.slice(i + 1),
+            ];
+            return [newHierarchy, handStrengths];
+          } else if (
+            numbers.indexOf(playerHands[player][1].charAt(0)) <
+            numbers.indexOf(
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+            )
+          ) {
+            i++;
+          }
+        } else if (
+          numbers.indexOf(playerHands[player][0].charAt(0)) <
+          numbers.indexOf(
+            playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+          )
+        ) {
+          i++;
+        }
+      }
+    } else if (strength / 2 == playerHands[player][0]) {
+      if (strength / 2 == playerHands[player][1]) {
+        // tie
+        const newHierarchy = [
+          ...hierarchy.slice(0, i),
+          "tie_" + hierarchy[i] + "_p" + player.toString(),
+          ...hierarchy.slice(i + 1),
+        ];
+        return [newHierarchy, handStrengths];
+      } else {
+        // i remains the same
+      }
+    } else {
+      // tie
+      const newHierarchy = [
+        ...hierarchy.slice(0, i),
+        "tie_" + hierarchy[i] + "_p" + player.toString(),
+        ...hierarchy.slice(i + 1),
+      ];
+      return [newHierarchy, handStrengths];
+    }
   }
 
   const newHierarchy = [
@@ -62,10 +173,11 @@ console.log(addPlayer("p1", 10, [10, 8, 7], ["p0", "p2", "p3"]));
 function handStrength(playerHands, shownCards) {
   let strengthFound = false;
   let i = 0;
-  let playerStrength, theNums, theSuits, arbStr, plaStr, tieBreaker;
+  let playerStrength, theNums, theSuits, arbStr, plaStr;
 
   [theNums, theSuits] = setHands(playerHands, shownCards);
-  [arbStr, plaStr, arbTie] = straightFlush(playerHands, shownCards);
+  [arbStr, plaStr] = straightFlush(playerHands, shownCards);
+  [arbStr1, plaStr1] = flush(playerHands, shownCards);
 
   var possibleHands = [
     royalFlush,
@@ -80,19 +192,18 @@ function handStrength(playerHands, shownCards) {
   ];
 
   while (strengthFound != false) {
-    [strengthFound, playerStrength, tieBreaker] = possibleHands[i](
-      theNums,
-      theSuits
-    );
+    [strengthFound, playerStrength] = possibleHands[i](theNums, theSuits);
     if (i == 1 && arbStr) {
       strengthFound = arbStr;
       playerStrength = plaStr;
-      tieBreaker = arbTie;
+    } else if (i == 4 && arbStr1) {
+      strengthFound = arbStr1;
+      playerStrength = plaStr1;
     }
     i++;
   }
 
-  return [playerStrength, tieBreaker];
+  return playerStrength;
 }
 
 // Organize loops
@@ -212,28 +323,67 @@ function fullHouse(theNums, theSuits) {
 }
 
 // Flush
-function flush(theNums, theSuits) {
-  counter = 0;
-  let highestCard;
-  searching = true;
-  for (var i = theNums.length - 1; i >= 0; i--) {
-    if (theNums[i] != 0) {
-      if (searching == true) {
-        highestCard = i + 2;
-        searching = false;
-      }
-      counter++;
-    } else {
-      counter = 0;
-      searching = true;
-    }
+function flush(hand, shown) {
+  allcards = ["", "", "", "", "", "", ""];
+  sortedcards = ["", "", "", "", "", "", ""];
 
-    //check if straight
-    if (counter == 5) {
-      return [true, 1000 * (5 * highestCard - 10)];
+  // get shown cards
+  for (let i = 0; i < 5; i++) {
+    allcards[i] = shown[i];
+  }
+
+  // get players cards
+  for (let i = 0; i < 2; i++) {
+    allcards[i + 5] = hand[i];
+  }
+
+  //sort cards
+  for (let j = 0; j < sortedcards.length; j++) {
+    min = numbers.indexOf(allcards[0].charAt(0)) + 2;
+    indexOfMin = 0;
+
+    for (let i = 0; i < allcards.length; i++) {
+      //find smallest card
+      if (min > numbers.indexOf(allcards[i].charAt(0)) + 2) {
+        min = numbers.indexOf(allcards[i].charAt(0)) + 2;
+        indexOfMin = i;
+      }
+    }
+    sortedcards[j] = allcards[indexOfMin];
+    allcards.splice(indexOfMin, 1);
+  }
+
+  //check for flush of a suit
+  suitOfFlush = "";
+  for (var i = 0; i < suits.length; i++) {
+    counter = 0;
+    for (var j = 0; j < sortedcards.length; j++) {
+      if (sortedcards[j].charAt(2) == suits[i]) {
+        counter++;
+      }
+    }
+    if (counter >= 5) {
+      suitOfFlush = suits[i];
+      break;
     }
   }
-  return [false, NaN];
+
+  if (suitOfFlush == "") {
+    return [false, NaN, NaN];
+  }
+
+  highestCards = ["", "", "", "", ""];
+  counter = 0;
+  for (var i = sortedcards.length - 1; i >= 0; i--) {
+    if (sortedcards[i].charAt(2) == suitOfFlush) {
+      highestCards[counter] = numbers.indexOf(sortedcards[i].charAt(0)) + 2;
+      counter++;
+    }
+
+    if (counter == 5) {
+      return [true, highestCards, NaN];
+    }
+  }
 }
 
 function straight(nums) {
