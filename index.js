@@ -215,7 +215,6 @@ function makebet(lob, player,bet, turn) {
 
 function getbet(lob) {
 
-  
   let apiBase = 'http://ssh.jakeyee.com:9998/bet/';
   apiBase = apiBase + lob;
 
@@ -353,16 +352,16 @@ function checkbet() {
     if (oldround == roundThing) {
       if (oldnum == num) {
          call(player);
-         sendmsg(seed, "SYSTEM:", player + "HAS CALLED!");
+         sendmsg( "SYSTEM:", player + "HAS CALLED!", seed);
       }
       else if (num == -1) {
         fold(player);
-        sendmsg(seed, "SYSTEM:", player + "HAS FOLDED!");
+        sendmsg( "SYSTEM:", player + "HAS FOLDED!", seed);
 
       }
       else {
         raise(num, player);
-        sendmsg(seed, "SYSTEM:", player + "HAS RAISED!");
+        sendmsg( "SYSTEM:", player + "HAS RAISED!", seed);
 
         
       }
@@ -400,7 +399,9 @@ div.innerHTML += '<p> <b style = "' + color + '">' + person + ':</b>' + message 
 
 
 function flipcard(cid, card) {
+  console.log(cid);
   document.getElementById(cid).src=card+".png";
+  console.log(card+".png");
 }
 
 function flipall(players) {
@@ -413,8 +414,8 @@ function flipall(players) {
         tempindex = tempindex -12 + 5;
       }
     }
-    flipcard("o" + str(i) + "1", cards[tempindex-1]);
-    flipcard ("o" + str(i) + "2", cards[tempindex]);
+    flipcard("o" + (i+1).toString() + "1", cards[tempindex-1]);
+    flipcard ("o" + (i+1).toString() + "2", cards[tempindex]);
   }
 }
 
@@ -501,7 +502,7 @@ function seededrand(seed) {
 
 function raise(bet, playerIndex = playernum) {
   
-
+  sendmsg("")
   betAmount[playerIndex] += bet;
   playerFunds[playerIndex] -= bet;
   // bigPot[0] += raise;
