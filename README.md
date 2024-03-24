@@ -1,16 +1,16 @@
-
+![image](https://github.com/jakekyee/secondpersonpoker/assets/99901262/8e01ce46-b9c7-4def-95ac-ac2b88104fac)
 
 # 2nd Person Poker - Made for Mountain Madness 2024 - Theme: A New Perspective.
 
 ## Participants
-Jacob Yee
-Andy Bae
-Kai Hikichi
-Hannah Lim
+Jacob Yee - jky9@sfu.ca 
+Andy Bae  
+Kai Hikichi  
+Hannah Lim - hla342@sfu.ca 
 
 ## Concept
 
-Play poker from the perspective of your opponents! In this altered variation of poker, you look at the cards of your competitors, not your own. Included are some counters to keep score, a fair deck, and an exciting twist on a classic game. 
+Play poker from the perspective of your opponents! In this altered variation of poker, you look at the cards of your competitors, not your own. Included are some counters to keep score, an integrated fair deck, and an exciting twist on a classic game. 
 
 ## Example Game (4players)
 Person A
@@ -34,11 +34,6 @@ For this reason, we have also provided a self-hosted api based private epheremal
 
 
 
-During the construction of this project, which spanned a day and a night, many une
-An arduous voyage across trecherous lands in the dead of night to relight a communication beacon and restore hope to the people.
-A union of friends and foes alike in the face of extreme odds. 
-
-
 
 ## Technical Details
 
@@ -48,6 +43,16 @@ Due to technical limitations concerning port forwarding, security defaults, and 
 
 
 ![image](https://github.com/jakekyee/secondpersonpoker/assets/99901262/8cacb91b-1bc8-4172-a7d8-39bc8f91bd7d)
+
+
+## How to run 
+
+Download the entirety of the project and open main.html. Ensure that all of the files remain in the same folder. When playing, Username is username, the room is a predecided number that connects all of the members of the group, and number of other players is the number of other players.
+
+
+
+
+
 
 
 
