@@ -229,16 +229,16 @@ function setHands(playerHands, shownCards) {
 // Royal Flush
 function royalFlush(theNums, theSuits) {
   if (theSuits.includes(5)) {
-    return [false, 0, NaN];
+    return [false, 0];
   }
   if (
     ((((theNums[12] == theNums[11]) == theNums[10]) == theNums[9]) ==
       theNums[8]) ==
     1
   ) {
-    return [true, 10000000, NaN];
+    return [true, 10000000];
   }
-  return [false, 0, NaN];
+  return [false, 0];
 }
 
 function straightFlush(hand, shown) {
@@ -301,10 +301,10 @@ function straightFlush(hand, shown) {
 // Four of a kind
 function fourOfAKind(theNums, theSuits) {
   if (theNums.includes(4)) {
-    return [true, 150000 + theNums.indexOf(4) + 2, NaN];
+    return [true, 150000 + theNums.indexOf(4) + 2];
   }
 
-  return [false, 0, NaN];
+  return [false, 0];
 }
 
 // Full House
@@ -314,11 +314,9 @@ function fullHouse(theNums, theSuits) {
       true,
       parseInt(theNums[theNums.indexOf(3)].toString() + "0000") +
         theNums[theNums.indexOf(2)],
-      ,
-      NaN,
     ];
   } else {
-    return [false, 0, NaN];
+    return [false, 0];
   }
 }
 
@@ -369,7 +367,7 @@ function flush(hand, shown) {
   }
 
   if (suitOfFlush == "") {
-    return [false, NaN, NaN];
+    return [false, NaN];
   }
 
   highestCards = ["", "", "", "", ""];
@@ -381,7 +379,7 @@ function flush(hand, shown) {
     }
 
     if (counter == 5) {
-      return [true, highestCards, NaN];
+      return [true, 60001 + Math.max(highestCards)];
     }
   }
 }
@@ -413,9 +411,9 @@ function straight(nums) {
 // Three of a Kind
 function threeOfAKind(playerHands, shownCards) {
   if (theNums.includes(3)) {
-    return [true, 2700 + theNums.indexOf(3) + 2, NaN];
+    return [true, 2700 + theNums.indexOf(3) + 2];
   }
-  return [false, 0, NaN];
+  return [false, 0];
 }
 
 // Two Pair
@@ -428,20 +426,20 @@ function twoPair(nums) {
       counter++;
     }
     if (counter == 2) {
-      return [true, 100 * (pairs[0] + pairs[1]), nums];
+      return [true, 100 * (pairs[0] + pairs[1])];
     }
   }
-  return [false, NaN, NaN];
+  return [false, NaN];
 }
 
 // Pair
 function pair(nums) {
   for (var i = nums.length - 1; i >= 0; i--) {
     if (nums[i] == 2) {
-      return [true, 20 * (i + 2), nums];
+      return [true, 20 * (i + 2)];
     }
   }
-  return [false, NaN, NaN];
+  return [false, NaN];
 }
 
 // High Card
@@ -449,9 +447,9 @@ function highCard(playerHands, none) {
   for (let card = 12; card > 0; card--) {
     for (let hand = 0; hand < playerHands.length; hand++) {
       if (playerHands[hand].charAt(0) == numbers[card]) {
-        return [true, card + 2, NaN];
+        return [true, card + 2];
       }
     }
   }
-  return [false, 0, NaN];
+  return [false, 0];
 }
