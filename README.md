@@ -4,8 +4,8 @@
 
 ## Participants
 Jacob Yee - jky9@sfu.ca 
-Andy Bae  
-Kai Hikichi  
+Andy Bae - jba168@sfu.ca
+Kai Hikichi - kjh28@sfu.ca 
 Hannah Lim - hla342@sfu.ca 
 
 ## Concept
