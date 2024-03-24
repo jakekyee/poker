@@ -45,12 +45,29 @@ document.addEventListener("keypress", function(event) {
 
 
 
+function add(id) {
+  thingthing = document.getElementById(id).textContent;
+  thingthing = parseInt(thingthing) + 1;
+  console.log(thingthing);
 
+  document.getElementById(id).textContent = thingthing;
+}
 
+function noadd(id) {
+  thingthing = document.getElementById(id).textContent;
+  thingthing = parseInt(thingthing) - 1;
+  console.log(thingthing);
+  document.getElementById(id).textContent = thingthing;
+}
 
 
 var usernamething = "1";
 function makelob(lob) {
+  whoami(lob);
+  startgame(lob);
+  numPlayers = document.getElementById('playercount').value;
+  flipall(numPlayers);
+
   usernamething = document.getElementById('uname').value;
   lobbynum = lob;
   console.log(lob);
@@ -85,8 +102,13 @@ function makelob(lob) {
 
 
 function joinlob(lob) {
-  usernamething = document.getElementById('uname').value;
+  whoami(lob);
 
+  startgame(lob);
+  
+  usernamething = document.getElementById('uname').value;
+  numPlayers = document.getElementById('playercount').value;
+  flipall(numPlayers);
   console.log(lob);
   
   let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
@@ -246,7 +268,7 @@ function sendmsg(player, msg, lob = seed) {
   let apiBase = 'http://ssh.jakeyee.com:9998/msg/';
   let msgtosend = "";
   // msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
-  msgtosend = msg.replace(" ", "+");
+  msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
 
 
   apiBase = apiBase  + lob + '-' + player + '-'+ msgtosend;
@@ -408,13 +430,14 @@ function flipcard(cid, card) {
 
 function flipall(players) {
   for (var i = 0; i<players; i++) {
-    var index = 5+2*playernum;
-    var tempindex = 5+2*i;
-    if (tempindex == index) {
-      tempindex = 5+2*(i+1);
-      if (tempindex > 12) {
-        tempindex = tempindex -12 + 5;
-      }
+    var index = 6+2*playernum;
+    var tempindex = 6+2*i;
+    if (playernum == i-1) {
+      tempindex = 6+2*(i+3);
+      
+    }
+    if (tempindex > 12) {
+      tempindex = tempindex -12 + 6;
     }
     flipcard("o" + (i+1).toString() + "1", cards[tempindex-1]);
     flipcard ("o" + (i+1).toString() + "2", cards[tempindex]);
@@ -423,9 +446,10 @@ function flipall(players) {
 
 
 
-function flipeverything(players, playernum) {
-  flipcard("y1", cards[5+2*playernum-1]);
-  flipcard ("y2", cards[5+2*playernum]);
+function flipeverything() {
+
+  flipcard("y1", cards[5+2*playernum]);
+  flipcard ("y2", cards[6+2*playernum]);
 }
 
 
@@ -504,7 +528,7 @@ function seededrand(seed) {
 
 function raise(bet, playerIndex = playernum) {
   
-  sendmsg("")
+  sendmsg(playernum, playernum + "has raised!", lob = seed); 
   betAmount[playerIndex] += bet;
   playerFunds[playerIndex] -= bet;
   // bigPot[0] += raise;
@@ -582,7 +606,7 @@ function check(playerIndex = playerNum) {
   }
 }
 
-function checkRoundOver(betAmount) {
+function checkRoundOver(betAmount, playerIndex) {
   //
   let firstPositiveValue = -1; // Initialize with an invalid value
   for (let i = 0; i < betAmount.length; i++) {
@@ -626,6 +650,30 @@ function checkRoundOver(betAmount) {
 
   return true; // All non-negative values are the same
 }
+
+function temptest () {
+
+  if (round == 0) {
+    flipcard("c1", cards[0]);
+    flipcard("c2", cards[1]);
+    flipcard("c3", cards[2]);
+  }
+  else if (round == 1) {
+    flipcard("c4", cards[3]);
+
+  }
+  else if (round == 2) {
+    flipcard("c5", cards[4]);
+  }
+  else if (round == 3) {
+    flipeverything(player,playernum)
+  }
+  round++;
+
+
+}
+
+
 
 function checkGameOver() {
   if (round == 4) {
