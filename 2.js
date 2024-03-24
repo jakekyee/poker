@@ -3,7 +3,12 @@
 // global variables
 suits = ["s", "c", "h", "d"];
 numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
-playerHands = ["5_s", "2_c"];
+playerHands = [
+  ["5_s", "2_c"],
+  ["5_s", "2_c"],
+  ["5_s", "2_c"],
+  ["5_s", "2_c"],
+];
 shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
 
 // handHierarchy function
@@ -34,12 +39,14 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
 
   if (handStrength == handStrengths[i]) {
     // if it is in range of two pair
-    if (strength > 299 && strength < 2701) {
+    if (handStrength > 299 && handStrength < 2701) {
       if (
-        playerHands[player][0].charAt(0) == playerHands[player][0].charAt(1) ||
-        strength ==
-          parseInt(playerHands[player][0].charAt(0)) +
-            parseInt(playerHands[player][1].charAt(1))
+        playerHands[player][0].charAt(0) == playerHands[player][1].charAt(0) ||
+        handStrength ==
+          numbers.indexOf(playerHands[player][0].charAt(0)) +
+            2 +
+            numbers.indexOf(playerHands[player][1].charAt(0)) +
+            2
       ) {
         // tie
         const newHierarchy = [
@@ -50,20 +57,22 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
         return [newHierarchy, handStrengths];
       } else if (
         playerHands[player][0].charAt(0) ==
-        playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+        playerHands[parseInt(hierarchy[i].charAt(2))][0].charAt(0)
       ) {
         if (
-          numbers.indexOf(playerHands[player][1].charAt(0)) >
+          numbers.indexOf(playerHands[player][1].charAt(0)) + 2 >
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           // i remains the same
         } else if (
-          numbers.indexOf(playerHands[player][1].charAt(0)) ==
+          numbers.indexOf(playerHands[player][1].charAt(0)) + 2 ==
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           // tie
           const newHierarchy = [
@@ -73,38 +82,41 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
           ];
           return [newHierarchy, handStrengths];
         } else if (
-          numbers.indexOf(playerHands[player][1].charAt(0)) <
+          numbers.indexOf(playerHands[player][1].charAt(0)) + 2 <
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           i++;
         }
       } else {
         if (
-          numbers.indexOf(playerHands[player][0].charAt(0)) >
+          numbers.indexOf(playerHands[player][0].charAt(0)) + 2 >
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           // i remains the same
         } else if (
-          numbers.indexOf(playerHands[player][0].charAt(0)) ==
+          numbers.indexOf(playerHands[player][0].charAt(0)) + 2 ==
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           if (
-            numbers.indexOf(playerHands[player][1].charAt(0)) >
+            numbers.indexOf(playerHands[player][1].charAt(0)) + 2 >
             numbers.indexOf(
-              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0) + 2
             )
           ) {
             // i remains the same
           } else if (
-            numbers.indexOf(playerHands[player][1].charAt(0)) ==
+            numbers.indexOf(playerHands[player][1].charAt(0)) + 2 ==
             numbers.indexOf(
-              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0) + 2
             )
           ) {
             // tie
@@ -115,24 +127,32 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
             ];
             return [newHierarchy, handStrengths];
           } else if (
-            numbers.indexOf(playerHands[player][1].charAt(0)) <
+            numbers.indexOf(playerHands[player][1].charAt(0)) + 2 <
             numbers.indexOf(
-              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
+              playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0) + 2
             )
           ) {
             i++;
           }
         } else if (
-          numbers.indexOf(playerHands[player][0].charAt(0)) <
+          numbers.indexOf(playerHands[player][0].charAt(0)) + 2 <
           numbers.indexOf(
             playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
-          )
+          ) +
+            2
         ) {
           i++;
         }
       }
-    } else if (strength / 2 == playerHands[player][0]) {
-      if (strength / 2 == playerHands[player][1]) {
+    } else if (
+      handStrength / 2 ==
+      numbers.indexOf(playerHands[player][0].charAt(0)) + 2
+    ) {
+      // Pair
+      if (
+        handStrength / 2 ==
+        numbers.indexOf(playerHands[player][1].charAt(0)) + 2
+      ) {
         // tie
         const newHierarchy = [
           ...hierarchy.slice(0, i),
@@ -167,8 +187,6 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
 
   return [newHierarchy, newHandStrengths];
 }
-
-console.log(addPlayer("p1", 10, [10, 8, 7], ["p0", "p2", "p3"]));
 
 function handStrength(playerHands, shownCards) {
   let strengthFound = false;
