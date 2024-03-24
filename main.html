@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>stuff</title>
+    <script src = "test.js">
+
+
+
+
+    </script>
+    <style>
+
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 5px;
+}
+
+
+        body {
+            background-color:black;
+            
+        }
+
+
+        .topmiddletwo {
+            display:table;
+            column-count:2;
+        }
+
+
+
+        .righttopmiddle {
+            width:30%;
+            height:100%;
+            /* flex:20%; */
+            /* padding:20px; */
+            float:right;
+
+        }
+
+        .lefttopmiddle {
+      
+
+            width:70%;
+
+        }
+        .top {
+            /* display:inline-block; */
+            display:flex;
+            /* width:100%; */
+
+            justify-content: center;
+            align-items: center;
+            margin:2.5px;
+        }
+        .middle {
+            display:flex;
+            width:100%;
+            justify-content: space-between;
+            align-items: center;
+            margin:2.5px;
+            padding-left:30px;
+            margin-left:auto;
+        }
+
+
+        .bottom {
+            /* display:inline-block; */
+            width:100%;
+            justify-content: center;
+            align-items: center;
+            margin:2.5px;
+        }
+        .bottombottom {
+            /* display:inline-block; */
+            width:100%;
+            justify-content: center;
+            align-items: center;
+            margin:2.5px;
+        }
+
+        .rightstuff {
+            width:30%;
+
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+        }
+
+        /* .rightstufflower {
+            width:30%;
+            height:40vh;
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+        } */
+
+        .everything{
+            display:flex;
+
+        }
+        .mostthing{
+            display: table;
+            background-color:black;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+        }
+
+        .card {
+            height:25vh;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+
+        }
+
+        .yourhand {
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .notyourhand {
+            display:flex;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+            justify-content: space-around;
+        }
+        /* .deck {
+            display:flex;
+            position:absolute;
+            left:10%;
+        } */
+
+        .river {
+            display:flex;
+
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+            justify-content: center;
+            align-items: center;   
+            align:left;
+        }
+        .other1 {
+            
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+        }
+        .other2 {
+
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+        }
+        .other3 {
+
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:3px;
+        }
+        .info {
+
+            border-style: solid;
+            border-color:white;
+            border-width: 3px;
+            border-radius:3px;
+            padding:15px;
+            margin-right:10px;
+
+
+            color:white;
+            font-family:monospace;
+            /* height:30vh; */
+        }
+
+
+
+        .chatlog {
+
+        border: none;
+        padding: 0px;
+        font-family: monospace;
+        color:white;
+        width: 100%;
+        height: 60vh;
+        overflow: scroll;
+        }
+
+        .chatlog p {
+
+            margin: 3px;
+
+
+        }
+
+
+        .pot p {
+
+margin: 3px;
+
+}
+.pot {
+    text-align:center;
+}
+
+        .inputbox input {
+
+        width: 60%;
+        font-family: monospace;
+        border-radius: 5px;
+
+        }
+        
+        .inputbox button {
+
+width: 30%;
+font-family: monospace;
+border-radius: 5px;
+color:black;
+    text-align:center;
+
+}
+
+.bettingstuff {
+    color:white;
+    text-align:center;
+}
+
+
+
+
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 60%; /* Full-width */
+  height: 10px; /* Specified height */
+  border-radius:10px;
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+.slidecontainer input[type=number] {
+    
+width: 30%;
+font-family: monospace;
+border-radius: 5px;
+
+}
+
+.bettingstuff button {
+    float: left;
+  width: 50%;
+  height:20%;
+  font-family: monospace;
+    justify-content: center;
+    padding-top:5%;
+    padding-bottom:5%;
+
+}
+
+.label {
+    margin: 3px;
+    color:white;
+    text-align:center;
+    font-family: monospace;
+
+}
+
+.playerbox {
+    position:absolute;
+    left:4%;
+    margin: 3px;
+    color:white;
+    text-align:center;
+    font-family: monospace;
+}
+
+.dialog {
+    position:absolute;
+    right:50%;
+    bottom:50%;
+height:50vh;
+width:50vw;
+
+}
+    </style>
+
+<div class = "popup">
+<dialog open>
+    <br>
+    <p>Enter room code</p>
+    <input type = "text" id = "roominput"> </input>
+    <form method="dialog">
+      <button onclick="makelob(document.getElementById('roominput').value)">Make Room</button>
+      <button onclick="joinlob(document.getElementById('roominput').value)">Join Room</button>
+    </form>
+  </dialog>
+  
+</div>
+
+
+    <div class = "playerbox">
+    <h1> </h1>
+    <br>
+    <h1>YOU ARE:</h1>
+    <h1 id = "player">P1</h1>
+    </div>
+
+
+    </head>
+    <body>
+    <div class ="everything">
+    <div class ="mostthing">
+    <div class = "toptwo">
+        <div class = "righttopmiddle"> 
+            <div class = "info">
+                <h1>INFO:</h1>
+                <p>P1 Balance: <b>1</b> </p> 
+                <p>P2 Balance: <b>1</b></p> 
+                <p>P3 Balance: <b>1</b></p> 
+                <p>P4 Balance: <b>1</b></p> 
+
+                
+                <div class = "pot">
+                <p>YOU</p>
+                <p id = "yourbet">33</p>
+                <p>|</p>
+                <p><b id = "potvalue">100</b></p>
+                <p>/  |  \</p>
+                <p id = othersbet>33  33  33</p>
+                </div>
+            </div>
+    
+    
+        </div>
+
+        <div class = "lefttopmiddle"> 
+    <div class = "top"> 
+        <div>
+        <p class = "label">Your Hand</p>
+        <div class = "yourhand">
+            <img class = "card" src = "rc2.png"><img class = "card" src = "rc2.png">
+        </div>
+    </div>
+
+    </div>
+    <div class = "middle" > 
+
+        <!-- <div class = "deck"><img class = "card" src = "rc2.png"></div> -->
+        <div>
+        <p class = "label">Community Cards</p>
+        <div class = "river">
+            <img class = "card" id = "c1" src = "rc2.png">
+            <img class = "card" id = "c2" src = "rc2.png">
+            <img class = "card" id = "c3" src = "rc2.png">
+            <img class = "card" id = "c4" src = "rc2.png">
+            <img class = "card" id = "c5" src = "rc2.png">
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+
+</div>
+
+
+    <div class = "bottom">
+        <div class = "ui"></div>
+    </div>
+    <div class = "bottombottom">
+        <div class = "notyourhand">
+            <div>
+            <p class = "label">Your Hand</p>
+            <div class = "other1"><img class = "card" src = "rc2.png"><img class = "card" src = "rc2.png"></div>
+            </div>
+
+            <div>
+            <p class = "label">Your Hand</p>
+            <div class = "other2"><img class = "card" src = "rc2.png"><img class = "card" src = "rc2.png"></div>
+            </div>
+
+            <div>
+            <p class = "label">Your Hand</p>
+            <div class = "other3"><img class = "card" src = "rc2.png"><img class = "card" src = "rc2.png"></div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+<div class = "rightstuff">
+    <div class = "chatlog" id = "chatbox">
+
+
+    </div>
+<div class = "inputbox"> 
+    <input type = "text"></input>
+    <button>Enter</button>
+</div>
+<hr>
+
+
+    <div class = "bettingstuff">
+        <div class="slidecontainer">
+
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        <input id = "betnum" type = "number"></input>
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("betnum");
+            output.setAttribute('value', slider.value) // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+            output.setAttribute('value', slider.value)
+            } 
+        </script>
+          </div>
+          <br>
+        <button id = "check">Check</button>
+        <button id = "call">Call</button>
+        <button id = "raise">Raise</button>
+        <button id = "fold">Fold</button>
+
+
+
+    </div>
+</div>
+</div>
+
+    
+    </body>
+</html>
