@@ -1,5 +1,4 @@
 // global variables
-import * as api from "./test.js";
 var numPlayers = 4;
 var roundBets = new Array(numPlayers);
 var smallPot = new Array(numPlayers);
