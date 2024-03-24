@@ -1,15 +1,113 @@
-// Functions to determine Hand Hierarchy
-
 // global variables
-suits = ["s", "c", "h", "d"];
-numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
-playerHands = [
+
+var numPlayers = 4;
+var roundBets = new Array(numPlayers);
+var smallPot = new Array(numPlayers);
+let round = 0;
+var betToMatch = 0;
+var betAmount = [0, 0, 0, 0];
+var bigPot = [0];
+var playerFunds = [400, 400, 400, 400];
+
+var suits = ["s", "c", "h", "d"];
+var numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
+var playerHands = [
   ["5_s", "2_c"],
   ["5_s", "2_c"],
   ["5_s", "2_c"],
   ["5_s", "2_c"],
 ];
-shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
+var shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
+
+// Functions to determine betting operations
+
+// get player's bet
+function getPlayerBet(playerIndex, playerFunds, betAmount, bigPot, round) {
+  bet = document.getElementById("bet").value;
+  betAmount[playerIndex] += bet;
+  playerFunds[playerIndex] -= bet;
+  bigPot[0] += bet;
+
+  // check if round is over
+  if (checkRoundOver(betAmount, playerIndex, numPlayers) == true) {
+    round++;
+  }
+  //console.log("test round: ", playerFunds, betAmount, bigPot, round);
+  return [playerFunds, betAmount, bigPot, round];
+}
+
+// raise bet
+function raise(playerIndex, playerFunds, betAmount, bigPot, round) {
+  raise = document.getElementById("raise").value;
+  betAmount[playerIndex] += raise;
+  playerFunds[playerIndex] -= raise;
+  bigPot[0] += raise;
+
+  if (checkRoundOver(betAmount, playerIndex, numPlayers, round)) {
+    round++;
+    return [round];
+  }
+  return [playerFunds, betAmount, bigPot, round];
+}
+
+// fold
+function fold(playerIndex, betAmount) {
+  // remove folded player from array for checking
+  // returns -1 if player folds
+  betAmount[playerIndex] = -1;
+  return [betAmount];
+}
+
+// call bet
+function call(playerIndex, numPlayers, playerFunds, betAmount, bigPot, round) {
+  temp = betAmount[playerIndex];
+  playerIndex = playerIndex % numPlayers;
+  // increase bet amount to the previous players bet amount
+  let prevPlayerIndex = (playerIndex - 1) % numPlayers;
+
+  betAmount[playerIndex] = betAmount[prevPlayerIndex];
+
+  // player funds subtracted by difference between new bet amount and old bet amount
+  difference = betAmount[playerIndex] - temp;
+  playerFunds[playerIndex] -= difference;
+  bigPot[0] += difference;
+
+  if (checkRoundOver(betAmount, playerIndex, numPlayers)) {
+    round++;
+  }
+  return [playerFunds, bigPot, betAmount, round];
+}
+
+// check
+function check() {
+  // pass
+  if (checkRoundOver(betAmount, playerIndex, numPlayers, round)) {
+    round++;
+    return [round];
+  }
+}
+
+// check if the round is over
+function checkRoundOver(betAmount, playerIndex, numPlayers) {
+  // returns new round num if round over, 0 if not
+  let roundCount = 0;
+  for (let i = 0; i < numPlayers; i++) {
+    //
+    let nextPlayerIndex = (playerIndex + i) % numPlayers;
+    // console.log("player index: ", nextPlayerIndex);
+    // console.log("bet amount: ", betAmount[nextPlayerIndex]);
+    if (betAmount[playerIndex] === betAmount[nextPlayerIndex]) {
+      roundCount++;
+    } else {
+      break; // If any bet amount doesn't match, exit the loop
+    }
+  }
+  if (roundCount === 4) {
+    return true;
+  }
+}
+
+// Functions to determine Hand Hierarchy
 
 // handHierarchy function
 function handHierarchy(shownCards, hands, playerCount) {
@@ -470,4 +568,105 @@ function highCard(playerHands, none) {
     }
   }
   return [false, 0];
+}
+
+// Functions to determine winning conditions
+
+// distribute winnings
+function distributeWinnings(winners, bets, balance) {
+  //winners = ["tie_p0_p1", "tie_p2_p3"]; or ["p0","p1","p2","p3"]
+  //bets = ["90", "100", "110", "120"];
+  //balance = ["0", "0", "0", "0"];
+
+  intbets = arrStrToInt(bets);
+  intbalance = arrStrToInt(balance);
+
+  //loop through each winner
+  for (var i = 0; i < winners.length; i++) {
+    temp = winners[i].split("_");
+    playerNum = 0;
+    payout = 0;
+
+    //check for tie                 
+    if (temp[0] == "tie") {
+      numTiedPlayers = temp.length - 1;
+      tiedPlayerNums = [];
+      tiedBets = [];
+
+      for (var j = 0; j < numTiedPlayers; j++) {
+        tiedPlayerNums[j] = parseInt(temp[j + 1][1]);
+        tiedBets[j] = intbets[tiedPlayerNums[j]];
+      }
+
+      for (var j = 0; j < tiedBets.length; j++) {
+        payout = 0;
+        index = tiedBets.indexOf(Math.min(...tiedBets));
+        currentBet = tiedBets[index];
+
+        //subtract that bet from all players
+        for (var k = 0; k < intbets.length; k++) {
+          // check if bet is large enough
+          if (intbets[k] - currentBet <= 0) {
+            payout += intbets[k];
+            intbets[k] = 0;
+          } else {
+            payout += currentBet;
+            intbets[k] -= currentBet;
+          }
+        }
+        //give even amount to tied winners
+        for (var k = 0; k < tiedPlayerNums.length; k++) {
+          intbalance[tiedPlayerNums[k]] += Math.floor(
+            payout / tiedPlayerNums.length
+          );
+        }
+
+        //reset arrays and stuff
+        tiedPlayerNums.splice(index, 1);
+        for (var k = 0; k < tiedBets.length; k++) {
+          tiedBets[k] -= currentBet;
+        }
+        tiedBets[index] = 999999999999999;
+      }
+    } else {
+      //check winners bet
+      playerNum = parseInt(temp[0][1]);
+      winnersBet = intbets[playerNum];
+
+      //subtract that bet from all players
+      for (var j = 0; j < intbets.length; j++) {
+        // check if bet is large enough
+        if (intbets[j] - winnersBet <= 0) {
+          payout += intbets[j];
+          intbets[j] = 0;
+        } else {
+          payout += winnersBet;
+          intbets[j] -= winnersBet;
+        }
+      }
+
+      //give amount to winner
+      intbalance[playerNum] += payout;
+    }
+  }
+
+  return arrIntToStr(intbalance);
+}
+
+// str array to int array
+function arrStrToInt(arr) {
+  intArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    intArr[i] = parseInt(arr[i]);
+  }
+  return intArr;
+}
+
+// int array to str array
+function arrIntToStr(arr) {
+  strArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    strArr[i] = arr[i].toString();
+  }
+  return strArr;
 }
