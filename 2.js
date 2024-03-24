@@ -57,7 +57,7 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
         return [newHierarchy, handStrengths];
       } else if (
         playerHands[player][0].charAt(0) ==
-        playerHands[parseInt(hierarchy[i].charAt(2))][0].charAt(0)
+        playerHands[parseInt(hierarchy[i].charAt(1))][0].charAt(0)
       ) {
         if (
           numbers.indexOf(playerHands[player][1].charAt(0)) + 2 >
@@ -187,6 +187,7 @@ function addPlayer(player, handStrength, handStrengths, hierarchy) {
 
   return [newHierarchy, newHandStrengths];
 }
+console.log(addPlayer(1, 2666, [2666, 12], ["p0", "p3"]));
 
 function handStrength(playerHands, shownCards) {
   let strengthFound = false;
