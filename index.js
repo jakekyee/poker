@@ -36,7 +36,22 @@ let totalplayers = -1;
 
 
 
+document.addEventListener("keypress", function(event) {
+  if (event.keyCode == 13) {
+    sendmsg(document.getElementById('uname').value,  document.getElementById('mbox').value);
+    document.getElementById('mbox').value = "";
+  }
+});
+
+
+
+
+
+
+
+var usernamething = "1";
 function makelob(lob) {
+  usernamething = document.getElementById('uname').value;
   lobbynum = lob;
   console.log(lob);
   let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
@@ -70,6 +85,8 @@ function makelob(lob) {
 
 
 function joinlob(lob) {
+  usernamething = document.getElementById('uname').value;
+
   console.log(lob);
   
   let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
@@ -274,10 +291,11 @@ function getmsg(lob) {
     console.log('Data received:', data);
     pmsg = data.pnum;
     if (msg != data.message) {
+      msg = data.message;
       updatechat(pmsg, msg);
-
     }
     msg = data.message;
+    
     
     
   })

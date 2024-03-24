@@ -319,8 +319,11 @@ width:50vw;
 <div class = "popup">
 <dialog open>
     <br>
+    <p>Enter username</p>
+    <input type = "text" id = "uname"> </input>
     <p>Enter room code</p>
     <input type = "text" id = "roominput"> </input>
+    
     <form method="dialog">
       <button onclick="makelob(document.getElementById('roominput').value)">Make Room</button>
       <button onclick="joinlob(document.getElementById('roominput').value)">Join Room</button>
@@ -433,7 +436,7 @@ width:50vw;
     </div>
 <div class = "inputbox"> 
     <input id = 'mbox'type = "text"></input>
-    <button onclick = "sendmsg(1, document.getElementById('mbox').value)">Enter</button>
+    <button onclick = "sendmsg(document.getElementById('uname').value, document.getElementById('mbox').value)">Enter</button>
 </div>
 <hr>
 
