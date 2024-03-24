@@ -2,22 +2,9 @@
 
 // global variables
 suits = ["s", "c", "h", "d"];
-numbers = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "x",
-  "j",
-  "q",
-  "k",
-  "a",
-];
+numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
+playerHands = ["5_s", "2_c"];
+shownCards = ["2_s", "2_d", "4_c", "4_h", "5_d"];
 
 // cards are formatted as (number)_(suit)
 
@@ -50,6 +37,8 @@ function handStrength(playerHands, shownCards) {
   let i = 0;
   let playerStrength;
 
+  [nums, retu];
+
   var possibleHands = [
     royalFlush,
     straightFlush,
@@ -69,6 +58,14 @@ function handStrength(playerHands, shownCards) {
   }
 
   return playerStrength;
+}
+
+// Organize loops
+function setHands(playerHands, shownCards) {
+  let returnNums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let returnSuits = [0, 0, 0, 0];
+
+  return [[returnNums], [returnSuits]];
 }
 
 // Royal Flush
@@ -124,6 +121,8 @@ function straightFlush(playerHands, shownCards) {
 //     150001-150014
 
 function fourOfAKind(playerHands, shownCards) {
+  let numbers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
   return [true, playerStrength];
 }
 
@@ -165,6 +164,7 @@ function threeOfAKind(playerHands, shownCards) {
 //     300-2700
 
 function twoPair(playerHands, shownCards) {
+  // use pair function
   return [true, playerStrength];
 }
 
@@ -180,11 +180,13 @@ function pair(playerHands, shownCards) {
 // a
 //     1-14
 
-function highCard(playerHands, shownCards) {
-    for (let card = 0; card<numbers.length; card++ ) {
-        for(let hand = 0; hand<playerHands.length;hand++) {
-            if (playerHands[card])
-        }
+function highCard(playerHands) {
+  for (let card = 12; card > 0; card--) {
+    for (let hand = 0; hand < playerHands.length; hand++) {
+      if (playerHands[hand].charAt(0) == numbers[card]) {
+        return [true, card + 2];
+      }
     }
+  }
   return [true, playerStrength];
 }
