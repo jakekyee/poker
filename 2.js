@@ -81,9 +81,8 @@ function setHands(playerHands, shownCards) {
 }
 
 // Royal Flush
-
 function royalFlush(theNums, theSuits) {
-  if (!theSuits.includes(5)) {
+  if (theSuits.includes(5)) {
     return [false, 0];
   }
   if (
@@ -105,13 +104,12 @@ function straightFlush(playerHands, shownCards) {
 }
 
 // Four of a kind
-// 150000+a
-//     150001-150014
+function fourOfAKind(theNums, theSuits) {
+  if (theNums.includes(4)) {
+    return [true, 150000 + theNums.indexOf(4) + 2];
+  }
 
-function fourOfAKind(playerHands, shownCards) {
-  let numbers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  return [true, playerStrength];
+  return [false, 0];
 }
 
 // Full House
@@ -127,9 +125,9 @@ function fullHouse(playerHands, shownCards) {
 // Flush
 function flush(theNums, theSuits) {
   if (theSuits.includes(5)) {
-    return [true, 0];
+    return [true, 60001 + theNums.indexOf(5) + 2, theNums];
   }
-  return [true, 60001, theNums];
+  return [false, 0, NaN];
 }
 
 // Straight
@@ -141,11 +139,11 @@ function straight(playerHands, shownCards) {
 }
 
 // Three of a Kind
-// 2700+a
-//     2701-2804
-
 function threeOfAKind(playerHands, shownCards) {
-  return [true, playerStrength];
+  if (theNums.includes(3)) {
+    return [true, 2700 + theNums.indexOf(3) + 2];
+  }
+  return [false, 0];
 }
 
 // Two Pair
