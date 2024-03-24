@@ -67,6 +67,7 @@ function makelob(lob) {
   startgame(lob);
   numPlayers = document.getElementById('playercount').value;
   flipall(numPlayers);
+  
 
   usernamething = document.getElementById('uname').value;
   lobbynum = lob;
@@ -95,6 +96,15 @@ function makelob(lob) {
     checkbet(lob);
     checkmsg(lob);
     starteverything();
+
+    fetch(apiBase, { method: 'PUT', body: JSON.stringify(toSend)})
+    .then(response => response.json())
+    .then(toSend => console.log(toSend))
+    .catch(error => {
+      console.error ('Error:', error);
+      console.log(toSend);
+    });
+
 }
 
 
@@ -102,14 +112,19 @@ function makelob(lob) {
 
 
 function joinlob(lob) {
-  whoami(lob);
 
+
+  whoami(lob);
   startgame(lob);
-  
-  usernamething = document.getElementById('uname').value;
   numPlayers = document.getElementById('playercount').value;
+  playernum++;
+
   flipall(numPlayers);
+  usernamething = document.getElementById('uname').value;
   console.log(lob);
+  seed = lob;
+
+
   
   let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
   apiBase = apiBase + lob;
@@ -123,7 +138,6 @@ function joinlob(lob) {
   };
 
 
-
   fetch(apiBase, { method: 'PUT', body: JSON.stringify(toSend)})
     .then(response => response.json())
     .then(toSend => console.log(toSend))
@@ -131,10 +145,14 @@ function joinlob(lob) {
       console.error ('Error:', error);
       console.log(toSend);
     });
-    seed = lob;
+
+
+
+
     checkbet(lob);
     checkmsg(lob);
     starteverything();
+    
 
 
 }
@@ -528,7 +546,7 @@ function seededrand(seed) {
 
 function raise(bet, playerIndex = playernum) {
   
-  sendmsg(playernum, playernum + "has raised!", lob = seed); 
+  sendmsg(playernum, playernum + "has raised!", seed); 
   betAmount[playerIndex] += bet;
   playerFunds[playerIndex] -= bet;
   // bigPot[0] += raise;
