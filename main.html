@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>stuff</title>
-    <script src = "test.js">
+    <script src = "index.js">
 
 
 
@@ -432,8 +432,8 @@ width:50vw;
 
     </div>
 <div class = "inputbox"> 
-    <input type = "text"></input>
-    <button>Enter</button>
+    <input id = 'mbox'type = "text"></input>
+    <button onclick = "sendmsg(1, document.getElementById('mbox').value)">Enter</button>
 </div>
 <hr>
 
@@ -455,10 +455,10 @@ width:50vw;
         </script>
           </div>
           <br>
-        <button id = "check">Check</button>
-        <button id = "call">Call</button>
-        <button id = "raise">Raise</button>
-        <button id = "fold">Fold</button>
+        <button id = "check" onclick="check()">Check</button>
+        <button id = "call" onclick = "call()">Call</button>
+        <button id = "raise" onclick = 'raise(document.getElementById("betnum").value)'>Raise</button>
+        <button id = "fold" onclick = "fold()">Fold</button>
 
 
 

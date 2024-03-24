@@ -278,10 +278,12 @@ function checkbet(lob) {
   let oldround = round;
   getbet(lob);
   if (oldnum != num || oldplayer != player || oldround != round ) {
+    
+
 
   }
 
-  setTimeout(checkmsg(), 1000);
+  setTimeout(checkbet, 3000);
 
 }
 
@@ -341,6 +343,7 @@ function flipeverything(players, playernum) {
 // first5 is river, next 2 p1, p2, p3, p4
 var cardarray = ['2_s', '3_s', '4_s', '5_s', '6_s', '7_s', '8_s', '9_s', 'x_s', 'j_s', 'q_s', 'k_s', 'a_s', '2_c', '3_c', '4_c', '5_c', '6_c', '7_c', '8_c', '9_c', 'x_c', 'j_c', 'q_c', 'k_c', 'a_c', '2_h', '3_h', '4_h', '5_h', '6_h', '7_h', '8_h', '9_h', 'x_h', 'j_h', 'q_h', 'k_h', 'a_h', '2_d', '3_d', '4_d', '5_d', '6_d', '7_d', '8_d', '9_d', 'x_d', 'j_d', 'q_d', 'k_d', 'a_d']
 var cards = [];
+var rivercards = [];
 var tempcards = [];
 
 function startgame(seed) {
@@ -363,6 +366,7 @@ function startgame(seed) {
   }
 
   for (var i = 0; i < 13; i++) {
+    
     cards.push(cardarray[tempcards[i]])
   }
 
@@ -391,3 +395,8 @@ function seededrand(seed) {
 
 
 
+function doEverything(){
+
+
+
+}
