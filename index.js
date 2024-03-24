@@ -75,7 +75,7 @@ function makelob(lob) {
 
 
     seed = lob;
-    // checkbet(lob);
+    checkbet(lob);
     checkmsg(lob);
     starteverything();
 }
@@ -110,7 +110,7 @@ function joinlob(lob) {
       console.log(toSend);
     });
     seed = lob;
-    // checkbet(lob);
+    checkbet(lob);
     checkmsg(lob);
     starteverything();
 
@@ -245,7 +245,9 @@ function getbet(lob) {
 function sendmsg(player, msg, lob = seed) {
   let apiBase = 'http://ssh.jakeyee.com:9998/msg/';
   let msgtosend = "";
-  msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
+  // msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
+  msgtosend = msg.replace(" ", "+");
+
 
   apiBase = apiBase  + lob + '-' + player + '-'+ msgtosend;
 
