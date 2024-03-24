@@ -1,340 +1,258 @@
 // global variables
+var numPlayers = 4;
+let round = 0;
+var betAmount = [0, 0, 0, 0];
+var playerFunds = [400, 400, 400, 400];
+var game = 1;
 var seed = -1;
 let num = -1;
 let player = -1;
 let roundThing = -1;
 var lobbynum = -1;
-var numPlayers = 4;
-var roundBets = new Array(numPlayers);
-var smallPot = new Array(numPlayers);
-let round = 0;
-var betToMatch = 0;
-var betAmount = [0, 0, 0, 0];
-var bigPot = [0];
-var playerFunds = [400, 400, 400, 400];
 var gameover = 0;
+
 var suits = ["s", "c", "h", "d"];
 var numbers = ["2", "3", "4", "5", "6", "7", "8", "9", "x", "j", "q", "k", "a"];
-var playerHands = [
-  ["5_s", "2_c"],
-  ["5_s", "2_c"],
-  ["5_s", "2_c"],
-  ["5_s", "2_c"],
-];
-var shownCards = ["a_s", "2_d", "4_c", "4_h", "5_d"];
+var [shownCards, playerHands] = startgame(seed + game);
 
+// global variables
 // Functions to determine betting operations
-
 
 let pmsg = -1;
 let msg = "";
-
 
 let pnumThing = -1;
 let playernum = -1;
 let totalplayers = -1;
 
-
-
-document.addEventListener("keypress", function(event) {
+document.addEventListener("keypress", function (event) {
   if (event.keyCode == 13) {
-    sendmsg(document.getElementById('uname').value,  document.getElementById('mbox').value);
-    document.getElementById('mbox').value = "";
+    sendmsg(
+      document.getElementById("uname").value,
+      document.getElementById("mbox").value
+    );
+    document.getElementById("mbox").value = "";
   }
 });
 
-
-
-function add(id) {
-  thingthing = document.getElementById(id).textContent;
-  thingthing = parseInt(thingthing) + 1;
-  console.log(thingthing);
-
-  document.getElementById(id).textContent = thingthing;
-}
-
-function noadd(id) {
-  thingthing = document.getElementById(id).textContent;
-  thingthing = parseInt(thingthing) - 1;
-  console.log(thingthing);
-  document.getElementById(id).textContent = thingthing;
-}
-
-
 var usernamething = "1";
 function makelob(lob) {
-  whoami(lob);
-  startgame(lob);
-  numPlayers = document.getElementById('playercount').value;
-  flipall(numPlayers);
-
-  usernamething = document.getElementById('uname').value;
+  usernamething = document.getElementById("uname").value;
   lobbynum = lob;
   console.log(lob);
-  let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
+  let apiBase = "http://ssh.jakeyee.com:9998/lob/";
   apiBase = apiBase + lob;
 
   let toSend = {
-    id:lob,
-    pnum:0
+    id: lob,
+    pnum: 0,
   };
 
-
-
-  fetch(apiBase, { method: 'POST', body: JSON.stringify(toSend), mode:'no-cors'})
-    .then(response => response.json())
-    .then(toSend => console.log(toSend))
-    .catch(error => {
-      console.error ('Error:', error);
+  fetch(apiBase, {
+    method: "POST",
+    body: JSON.stringify(toSend),
+    mode: "no-cors",
+  })
+    .then((response) => response.json())
+    .then((toSend) => console.log(toSend))
+    .catch((error) => {
+      console.error("Error:", error);
       console.log(toSend);
     });
-    console.log("test");
+  console.log("test");
 
-
-    seed = lob;
-    checkbet(lob);
-    checkmsg(lob);
-    starteverything();
+  seed = lob;
+  // checkbet(lob);
+  checkmsg(lob);
+  starteverything();
 }
-
-
-
-
 
 function joinlob(lob) {
-  whoami(lob);
+  usernamething = document.getElementById("uname").value;
 
-  startgame(lob);
-  
-  usernamething = document.getElementById('uname').value;
-  numPlayers = document.getElementById('playercount').value;
-  flipall(numPlayers);
   console.log(lob);
-  
-  let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
+
+  let apiBase = "http://ssh.jakeyee.com:9998/lob/";
   apiBase = apiBase + lob;
 
   let toSend = {
-
-    id:lob,
-    pnum:0
-
-
+    id: lob,
+    pnum: 0,
   };
 
-
-
-  fetch(apiBase, { method: 'PUT', body: JSON.stringify(toSend)})
-    .then(response => response.json())
-    .then(toSend => console.log(toSend))
-    .catch(error => {
-      console.error ('Error:', error);
+  fetch(apiBase, { method: "PUT", body: JSON.stringify(toSend) })
+    .then((response) => response.json())
+    .then((toSend) => console.log(toSend))
+    .catch((error) => {
+      console.error("Error:", error);
       console.log(toSend);
     });
-    seed = lob;
-    checkbet(lob);
-    checkmsg(lob);
-    starteverything();
-
-
+  seed = lob;
+  // checkbet(lob);
+  checkmsg(lob);
+  starteverything();
 }
-
-
 
 function whoami(lob) {
-
-  
-  let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
+  let apiBase = "http://ssh.jakeyee.com:9998/lob/";
   apiBase = apiBase + lob;
 
-  fetch(apiBase,{method: 'GET'})
-  .then(response => {
-    if (!response.ok) {
-      console.log('R received:', response);
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Data received:', data);
+  fetch(apiBase, { method: "GET" })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("R received:", response);
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Data received:", data);
 
-    playernum = data.pnum
-    document.getElementById["player"].innerText = playernum;
-
-
-    
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-
-
+      playernum = data.pnum;
+      document.getElementById["player"].innerText = playernum;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 }
-
-
-
 
 function playernumbers(lob) {
-
-  
-  let apiBase = 'http://ssh.jakeyee.com:9998/lob/';
+  let apiBase = "http://ssh.jakeyee.com:9998/lob/";
   apiBase = apiBase + lob;
 
-  fetch(apiBase,{method: 'GET'})
-  .then(response => {
-    if (!response.ok) {
-      console.log('R received:', response);
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Data received:', data);
-    totalplayers = data.pnum;
-
-
-    
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-
+  fetch(apiBase, { method: "GET" })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("R received:", response);
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Data received:", data);
+      totalplayers = data.pnum;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 }
 
-
-
-function makebet(lob, player,bet, turn) {
-  let apiBase = 'http://ssh.jakeyee.com:9998/bet/';
-   apiBase = apiBase  + lob + '-' + player + '-'+ bet + '-' + turn;
+function makebet(lob, player, bet, turn) {
+  let apiBase = "http://ssh.jakeyee.com:9998/bet/";
+  apiBase = apiBase + lob + "-" + player + "-" + bet + "-" + turn;
 
   let toSend = {
-    id:lob,
-    pnum:player,
-    num:bet,
-    round:turn
+    id: lob,
+    pnum: player,
+    num: bet,
+    round: turn,
   };
 
-
-  fetch(apiBase, {headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  }, method: 'POST', body: JSON.stringify(toSend), mode:'no-cors'})
-    .then(response => response.json())
-    .then(toSend => console.log(toSend))
-    .catch(error => {
-      console.error ('Error:', error);
+  fetch(apiBase, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(toSend),
+    mode: "no-cors",
+  })
+    .then((response) => response.json())
+    .then((toSend) => console.log(toSend))
+    .catch((error) => {
+      console.error("Error:", error);
       console.log(toSend);
     });
-    console.log("test");
-
-
+  console.log("test");
 }
-
-
-
-
-
 
 function getbet(lob) {
-
-  let apiBase = 'http://ssh.jakeyee.com:9998/bet/';
+  let apiBase = "http://ssh.jakeyee.com:9998/bet/";
   apiBase = apiBase + lob;
 
-  fetch(apiBase,{method: 'GET'})
-  .then(response => {
-    if (!response.ok) {
-      console.log('R received:', response);
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Data received:', data);
-    num = data.num
-    player = data.pnum
-    roundThing = data.round
-    
-    
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
+  fetch(apiBase, { method: "GET" })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("R received:", response);
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Data received:", data);
+      num = data.num;
+      player = data.pnum;
+      roundThing = data.round;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 
-  console.log("dlkfjaslkdf",pnumThing);
+  console.log("dlkfjaslkdf", pnumThing);
 }
-
 
 function sendmsg(player, msg, lob = seed) {
-  let apiBase = 'http://ssh.jakeyee.com:9998/msg/';
+  let apiBase = "http://ssh.jakeyee.com:9998/msg/";
   let msgtosend = "";
-  // msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
-  msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(" ", "+");
+  msgtosend = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(" ", "+");
 
+  apiBase = apiBase + lob + "-" + player + "-" + msgtosend;
 
-  apiBase = apiBase  + lob + '-' + player + '-'+ msgtosend;
+  let toSend = {
+    id: lob,
+    pnum: player,
+    message: msgtosend,
+  };
 
- let toSend = {
-   id:lob,
-   pnum:player,
-   message:msgtosend,
- };
-
-
- fetch(apiBase, {headers: {
-   'Accept': 'application/json',
-   'Content-Type': 'application/json',
- }, method: 'POST', body: JSON.stringify(toSend), mode:'no-cors'})
-   .then(response => response.json())
-   .then(toSend => console.log(toSend))
-   .catch(error => {
-     console.error ('Error:', error);
-     console.log(toSend);
-   });
-   console.log("test");
-
+  fetch(apiBase, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(toSend),
+    mode: "no-cors",
+  })
+    .then((response) => response.json())
+    .then((toSend) => console.log(toSend))
+    .catch((error) => {
+      console.error("Error:", error);
+      console.log(toSend);
+    });
+  console.log("test");
 }
-
-
 
 function getmsg(lob) {
-
-  
-  let apiBase = 'http://ssh.jakeyee.com:9998/msg/';
+  let apiBase = "http://ssh.jakeyee.com:9998/msg/";
   apiBase = apiBase + lob;
 
-  fetch(apiBase,{method: 'GET'})
-  .then(response => {
-    if (!response.ok) {
-      console.log('R received:', response);
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Data received:', data);
-    pmsg = data.pnum;
-    if (msg != data.message) {
+  fetch(apiBase, { method: "GET" })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("R received:", response);
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Data received:", data);
+      pmsg = data.pnum;
+      if (msg != data.message) {
+        msg = data.message;
+        updatechat(pmsg, msg);
+      }
       msg = data.message;
-      updatechat(pmsg, msg);
-    }
-    msg = data.message;
-    
-    
-    
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 
-  console.log("dlkfjaslkdf",msg);
-  
+  console.log("dlkfjaslkdf", msg);
 }
-
-
 
 function checkpcount(lob) {
   let oldtotalplayers = totalplayers;
-  
+
   let offset = playernum - 1;
 
   playernumbers(lob);
@@ -344,10 +262,8 @@ function checkpcount(lob) {
   }
   if (started == 0) {
     setTimeout(checkmsg(), 1000);
-
   }
 }
-
 
 function checkmsg() {
   console.log(seed);
@@ -361,7 +277,6 @@ function checkmsg() {
   // updatechat(pmsg, message);
   // updatechat(pmsg, msg);
 
-
   console.log("test");
   setTimeout(checkmsg, 1000);
 }
@@ -372,89 +287,127 @@ function checkbet() {
   let oldplayer = player;
   let oldround = roundThing;
   getbet(seed);
-  if (oldnum != num || oldplayer != player || oldround != roundThing ) {
+  if (oldnum != num || oldplayer != player || oldround != roundThing) {
     if (oldround == roundThing) {
       if (oldnum == num) {
-         call(player);
-         sendmsg( "SYSTEM:", player + "HAS CALLED!", seed);
-      }
-      else if (num == -1) {
+        call(player);
+        sendmsg(seed, "SYSTEM:", player + "HAS CALLED!");
+      } else if (num == -1) {
         fold(player);
-        sendmsg( "SYSTEM:", player + "HAS FOLDED!", seed);
-
-      }
-      else {
+        sendmsg(seed, "SYSTEM:", player + "HAS FOLDED!");
+      } else {
         raise(num, player);
-        sendmsg( "SYSTEM:", player + "HAS RAISED!", seed);
-
-        
+        sendmsg(seed, "SYSTEM:", player + "HAS RAISED!");
       }
     }
   }
 
   setTimeout(checkbet, 4000);
-
 }
-
-
 
 function updatechat(person, message) {
-let color = "white";
-  switch(person) {
-case "p1":
-  color = "red";
-  break;
-case "p2":
-  color = "lightblue";
-  break;
-case "p3":
-  color = "orange";
-  break;
-  case "p4":
-  color = "lightpurple";
-  break;
-default:
-  color = "lightgreen";
-}
+  let color = "white";
+  switch (person) {
+    case "p1":
+      color = "red";
+      break;
+    case "p2":
+      color = "lightblue";
+      break;
+    case "p3":
+      color = "orange";
+      break;
+    case "p4":
+      color = "lightpurple";
+      break;
+    default:
+      color = "lightgreen";
+  }
 
-var div = document.getElementById('chatbox');
-div.innerHTML += '<p> <b style = "' + color + '">' + person + ':</b>' + message + '</p>';
+  var div = document.getElementById("chatbox");
+  div.innerHTML +=
+    '<p> <b style = "' + color + '">' + person + ":</b>" + message + "</p>";
 }
-
 
 function flipcard(cid, card) {
-  console.log(cid);
-  document.getElementById(cid).src=card+".png";
-  console.log(card+".png");
+  document.getElementById(cid).src = card + ".png";
 }
 
 function flipall(players) {
-  for (var i = 0; i<players; i++) {
-    var index = 6+2*playernum;
-    var tempindex = 6+2*i;
-    if (playernum == i-1) {
-      tempindex = 6+2*(i+3);
-      
+  for (var i = 0; i < players; i++) {
+    var index = 5 + 2 * playernum;
+    var tempindex = 5 + 2 * i;
+    if (tempindex == index) {
+      tempindex = 5 + 2 * (i + 1);
+      if (tempindex > 12) {
+        tempindex = tempindex - 12 + 5;
+      }
     }
-    if (tempindex > 12) {
-      tempindex = tempindex -12 + 6;
-    }
-    flipcard("o" + (i+1).toString() + "1", cards[tempindex-1]);
-    flipcard ("o" + (i+1).toString() + "2", cards[tempindex]);
+    flipcard("o" + str(i) + "1", cards[tempindex - 1]);
+    flipcard("o" + str(i) + "2", cards[tempindex]);
   }
 }
 
-
-
-function flipeverything() {
-
-  flipcard("y1", cards[5+2*playernum]);
-  flipcard ("y2", cards[6+2*playernum]);
+function flipeverything(players, playernum) {
+  flipcard("y1", cards[5 + 2 * playernum - 1]);
+  flipcard("y2", cards[5 + 2 * playernum]);
 }
 
-
 // first5 is river, next 2 p1, p2, p3, p4
-var cardarray = ['2_s', '3_s', '4_s', '5_s', '6_s', '7_s', '8_s', '9_s', 'x_s', 'j_s', 'q_s', 'k_s', 'a_s', '2_c', '3_c', '4_c', '5_c', '6_c', '7_c', '8_c', '9_c', 'x_c', 'j_c', 'q_c', 'k_c', 'a_c', '2_h', '3_h', '4_h', '5_h', '6_h', '7_h', '8_h', '9_h', 'x_h', 'j_h', 'q_h', 'k_h', 'a_h', '2_d', '3_d', '4_d', '5_d', '6_d', '7_d', '8_d', '9_d', 'x_d', 'j_d', 'q_d', 'k_d', 'a_d']
+var cardarray = [
+  "2_s",
+  "3_s",
+  "4_s",
+  "5_s",
+  "6_s",
+  "7_s",
+  "8_s",
+  "9_s",
+  "x_s",
+  "j_s",
+  "q_s",
+  "k_s",
+  "a_s",
+  "2_c",
+  "3_c",
+  "4_c",
+  "5_c",
+  "6_c",
+  "7_c",
+  "8_c",
+  "9_c",
+  "x_c",
+  "j_c",
+  "q_c",
+  "k_c",
+  "a_c",
+  "2_h",
+  "3_h",
+  "4_h",
+  "5_h",
+  "6_h",
+  "7_h",
+  "8_h",
+  "9_h",
+  "x_h",
+  "j_h",
+  "q_h",
+  "k_h",
+  "a_h",
+  "2_d",
+  "3_d",
+  "4_d",
+  "5_d",
+  "6_d",
+  "7_d",
+  "8_d",
+  "9_d",
+  "x_d",
+  "j_d",
+  "q_d",
+  "k_d",
+  "a_d",
+];
 var cards = [];
 var rivercards = [];
 var tempcards = [];
@@ -464,71 +417,54 @@ function startgame(seed) {
   tempcards = [];
   var temp = seed;
   var cardnum = -1;
-  var z = 0; 
+  var z = 0;
   while (z < 14) {
-    temp = temp + 1;  
+    temp = temp + 1;
     cardnum = seededrand(temp);
-    if (tempcards.includes(cardnum)){
-
-    }
-    else {
+    if (tempcards.includes(cardnum)) {
+    } else {
       tempcards.push(cardnum);
-      z = z+1;
+      z = z + 1;
     }
-    
   }
 
   for (var i = 0; i < 13; i++) {
-    
-    cards.push(cardarray[tempcards[i]])
+    cards.push(cardarray[tempcards[i]]);
   }
 
   flipcard("y1", "back");
-  flipcard ("y2", "back");
+  flipcard("y2", "back");
   flipcard("o11", "back");
-  flipcard ("o12", "back");
+  flipcard("o12", "back");
   flipcard("o21", "back");
-  flipcard ("o22", "back");
+  flipcard("o22", "back");
   flipcard("o31", "back");
-  flipcard ("o32", "back");
+  flipcard("o32", "back");
   flipcard("c1", "back");
-  flipcard ("c2", "back");
+  flipcard("c2", "back");
   flipcard("c3", "back");
-  flipcard ("c4", "back");
-  flipcard ("c5", "back");
+  flipcard("c4", "back");
+  flipcard("c5", "back");
 
-  console.log( cards);
+  console.log(cards);
+  return [
+    cards.slice(0, 5),
+    [
+      cards.slice(5, 7),
+      cards.slice(7, 9),
+      cards.slice(9, 11),
+      cards.slice(11, 13),
+    ],
+  ];
 }
 
 function seededrand(seed) {
   var thing = seed;
-    var x = Math.sin(thing++) * 10000;
-    return Math.floor((x - Math.floor(x))*10000)%52;
+  var x = Math.sin(thing++) * 10000;
+  return Math.floor((x - Math.floor(x)) * 10000) % 52;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function raise(bet, playerIndex = playernum) {
-  
-  sendmsg(playernum, playernum + "has raised!", lob = seed); 
   betAmount[playerIndex] += bet;
   playerFunds[playerIndex] -= bet;
   // bigPot[0] += raise;
@@ -538,16 +474,12 @@ function raise(bet, playerIndex = playernum) {
     makebet(seed, playerIndex, bet, round);
     if (checkGameOver()) {
       // Game is over
-    gameover = 1;
-
     }
   }
   return [playerFunds, betAmount, bigPot, round];
 }
 
 function fold(playerIndex = playernum) {
-  
-
   // remove folded player from array for checking
   // returns -1 if player folds
   betAmount[playerIndex] = -1;
@@ -558,15 +490,12 @@ function fold(playerIndex = playernum) {
   }
   if (checkGameOver()) {
     // Game is over
-    gameover = 1;
-    
   }
   return [betAmount, round];
 }
 
 function call(playerIndex = playernum) {
-  let numPlayers = totalplayers
-
+  let numPlayers = totalplayers;
 
   temp = betAmount[playerIndex];
   playerIndex = playerIndex % numPlayers;
@@ -583,12 +512,10 @@ function call(playerIndex = playernum) {
   if (checkRoundOver(betAmount, playerIndex)) {
     round++;
     makebet(seed, playerIndex, betAmount[playerIndex], round);
-
   }
   if (checkGameOver()) {
     // Game is over
     gameover = 1;
-    
   }
   return [playerFunds, bigPot, betAmount, round];
 }
@@ -601,12 +528,10 @@ function check(playerIndex = playerNum) {
   }
   if (checkGameOver()) {
     // Game is over
-    gameover = 1;
-    
   }
 }
 
-function checkRoundOver(betAmount, playerIndex) {
+function checkRoundOver(betAmount) {
   //
   let firstPositiveValue = -1; // Initialize with an invalid value
   for (let i = 0; i < betAmount.length; i++) {
@@ -624,8 +549,6 @@ function checkRoundOver(betAmount, playerIndex) {
       playerFunds
     );
 
-
-
     return true;
   }
 
@@ -639,41 +562,14 @@ function checkRoundOver(betAmount, playerIndex) {
     flipcard("c1", cards[0]);
     flipcard("c2", cards[1]);
     flipcard("c3", cards[2]);
-  }
-  else if (round == 1) {
+  } else if (round == 1) {
     flipcard("c4", cards[3]);
-
-  }
-  else if (round == 2) {
+  } else if (round == 2) {
     flipcard("c5", cards[4]);
   }
 
   return true; // All non-negative values are the same
 }
-
-function temptest () {
-
-  if (round == 0) {
-    flipcard("c1", cards[0]);
-    flipcard("c2", cards[1]);
-    flipcard("c3", cards[2]);
-  }
-  else if (round == 1) {
-    flipcard("c4", cards[3]);
-
-  }
-  else if (round == 2) {
-    flipcard("c5", cards[4]);
-  }
-  else if (round == 3) {
-    flipeverything(player,playernum)
-  }
-  round++;
-
-
-}
-
-
 
 function checkGameOver() {
   if (round == 4) {
@@ -683,6 +579,7 @@ function checkGameOver() {
       playerFunds
     );
     gameover = 1;
+    game++;
     return true;
   } else {
     return false;

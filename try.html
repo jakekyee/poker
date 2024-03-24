@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>stuff</title>
-    <script src = "index.js">
+    <script src = "try.js">
 
     </script>
     <style>
@@ -321,8 +321,6 @@ width:50vw;
     <input type = "text" id = "uname"> </input>
     <p>Enter room code</p>
     <input type = "text" id = "roominput"> </input>
-    <p>Enter num of other players</p>
-    <input type = "text" id = "playercount"> </input>
     
     <form method="dialog">
       <button onclick="makelob(document.getElementById('roominput').value)">Make Room</button>
@@ -349,10 +347,10 @@ width:50vw;
         <div class = "righttopmiddle"> 
             <div class = "info">
                 <h1>INFO:</h1>
-                <p>P1 Balance: <button onclick = "noadd('p1bal');">-</button> <b id = "p1bal">1</b> <button onclick = "add('p1bal');">+</button> </p> 
-                <p>P2 Balance: <button onclick = "noadd('p2bal');">-</button> <b id = "p2bal">1</b> <button onclick = "add('p2bal');">+</button></p> 
-                <p>P3 Balance: <button onclick = "noadd('p3bal');">-</button> <b id = "p3bal">1</b> <button onclick = "add('p3bal');">+</button></p> 
-                <p>P4 Balance: <button onclick = "noadd('p4bal');">-</button> <b id = "p4bal">1</b> <button onclick = "add('p4bal');">+</button></p> 
+                <p>P1 Balance: <b>1</b> </p> 
+                <p>P2 Balance: <b>1</b></p> 
+                <p>P3 Balance: <b>1</b></p> 
+                <p>P4 Balance: <b>1</b></p> 
 
                 
                 <div class = "pot">
@@ -373,23 +371,23 @@ width:50vw;
         <div>
         <p class = "label">Your Hand</p>
         <div class = "yourhand">
-            <img id = "y1" class = "card" src = "back.png">
-            <img id = "y2" class = "card" src = "back.png">
+            <img id = "y1" class = "card" src = "rc2.png">
+            <img id = "y2" class = "card" src = "rc2.png">
         </div>
     </div>
 
     </div>
     <div class = "middle" > 
 
-        <!-- <div class = "deck"><img class = "card" src = "back.png"></div> -->
+        <!-- <div class = "deck"><img class = "card" src = "rc2.png"></div> -->
         <div>
         <p class = "label">Community Cards</p>
         <div class = "river">
-            <img class = "card" id = "c1" src = "back.png">
-            <img class = "card" id = "c2" src = "back.png">
-            <img class = "card" id = "c3" src = "back.png">
-            <img class = "card" id = "c4" src = "back.png">
-            <img class = "card" id = "c5" src = "back.png">
+            <img class = "card" id = "c1" src = "rc2.png">
+            <img class = "card" id = "c2" src = "rc2.png">
+            <img class = "card" id = "c3" src = "rc2.png">
+            <img class = "card" id = "c4" src = "rc2.png">
+            <img class = "card" id = "c5" src = "rc2.png">
         </div>
     </div>
 
@@ -407,23 +405,23 @@ width:50vw;
     <div class = "bottombottom">
         <div class = "notyourhand">
             <div>
-            <p class = "label">P2</p>
+            <p class = "label">Your Hand</p>
             <div class = "other1">
-                <img id = "o11" class = "card" src = "back.png">
-                <img id = "o12" class = "card" src = "back.png"></div>
+                <img id = "o11" class = "card" src = "rc2.png">
+                <img id = "o12" class = "card" src = "rc2.png"></div>
             </div>
 
             <div>
-            <p class = "label">P3</p>
+            <p class = "label">Your Hand</p>
             <div class = "other2">
-                <img id = "o21"class = "card" src = "back.png">
-                <img id = "o22"class = "card" src = "back.png"></div>
+                <img id = "o21"class = "card" src = "rc2.png">
+                <img id = "o22"class = "card" src = "rc2.png"></div>
             </div>
 
             <div>
-            <p class = "label">P4</p>
-            <div class = "other3" ><img id = "o31"class = "card" src = "back.png">
-                <img id = "o32"class = "card" src = "back.png"></div>
+            <p class = "label">Your Hand</p>
+            <div class = "other3" ><img id = "o31"class = "card" src = "rc2.png">
+                <img id = "o32"class = "card" src = "rc2.png"></div>
             </div>
         
         </div>
@@ -459,12 +457,9 @@ width:50vw;
           </div>
           <br>
         <button id = "check" onclick="check()">Check</button>
-        <button id = "raise" onclick = "raise(document.getElementById('betnum').value);sendmsg(document.getElementById('uname').value)">Raise</button>
+        <button id = "call" onclick = "call()">Call</button>
+        <button id = "raise" onclick = 'raise(document.getElementById("betnum").value)'>Raise</button>
         <button id = "fold" onclick = "fold()">Fold</button>
-        <button id = "test" onclick = "temptest()">Flip</button>
-        <button id = "call" onclick = "startgame(document.getElementById('roominput').value+1)">Restart</button>
-        <button id = "test" onclick = "flipeverything()">Reveal</button>
-
 
 
 
