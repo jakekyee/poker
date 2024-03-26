@@ -50,9 +50,11 @@ Due to technical limitations concerning port forwarding, security defaults, and 
 Download the entirety of the project and open main.html. Ensure that all of the files remain in the same folder. When playing, Username is username, the room is a predecided number that connects all of the members of the group, and number of other players is the number of other players.
 
 
+Video Tutorial:  
+![](https://crocbox.jakeyee.com/temptest/static/06afca29.mp4)  
 
-https://crocbox.jakeyee.com/temptest/static/06afca29.mp4
-https://files.catbox.moe/gnxjh4.mp4
+Mirror:  
+![](https://files.catbox.moe/gnxjh4.mp4)  
 
 
 
