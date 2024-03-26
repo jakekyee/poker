@@ -51,10 +51,10 @@ Download the entirety of the project and open main.html. Ensure that all of the 
 
 
 Video Tutorial:  
-![](https://crocbox.jakeyee.com/temptest/static/06afca29.mp4)  
+![thing](https://crocbox.jakeyee.com/temptest/static/06afca29.mp4)  
 
 Mirror:  
-![](https://files.catbox.moe/gnxjh4.mp4)  
+![thing2](https://files.catbox.moe/gnxjh4.mp4)  
 
 
 
