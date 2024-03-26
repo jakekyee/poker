@@ -10,7 +10,7 @@ Hannah Lim - hla342@sfu.ca
 
 ## Concept
 
-Play poker from the perspective of your opponents! In this altered variation of poker, you look at the cards of your competitors, not your own. Included are some counters to keep score, an integrated fair deck, and an exciting twist on a classic game. 
+Play poker from the perspective of your opponents! In this altered variation of poker, you look at the cards of your competitors, not your own. Included are some counters to keep score, an integrated private chatroom, and an exciting twist on a classic game. 
 
 ## Example Game (4players)
 Person A
