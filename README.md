@@ -1,4 +1,4 @@
-![image](https://github.com/jakekyee/secondpersonpoker/assets/99901262/8e01ce46-b9c7-4def-95ac-ac2b88104fac)
+
 
 # 2nd Person Poker - Made for Mountain Madness 2024 - Theme: A New Perspective.
 
